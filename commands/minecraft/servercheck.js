@@ -17,7 +17,7 @@ module.exports = {
                 port: ports,
             })
             .then((result) => {
-                check.edit(`\`\`\`nim\n--${args[0]}--\n\nServer Ip: ${result.srvRecord.host} \nVersion: ${result.version} \nOnline Players: ${result.onlinePlayers}  \nMax Players: ${result.maxPlayers}\`\`\``);
+                check.edit(`\`\`\`nim\n--${args[0]}--\n\nServer Ip: ${result.host} \nVersion: ${result.version} \nOnline Players: ${result.onlinePlayers}  \nMax Players: ${result.maxPlayers}\`\`\``);
             })
             .catch((err) => {
                 if (err) console.log(err);
