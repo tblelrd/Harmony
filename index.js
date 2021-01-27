@@ -39,7 +39,7 @@ bot.once('ready', async () =>{
     readCommands('commands');
     console.log(`Logged in as ${bot.user.username}!`);
 
-		console.log(process.env.TOKEN)
+		console.log(process.env.TOKEN);
 });
 
 // Queue status template
@@ -78,12 +78,12 @@ bot.distube
         message.channel.send('An error encountered: ' + e);
     });
 
-const Database = require("@replit/database")
-const db = new Database()
+const Database = require('@replit/database');
+const db = new Database();
 
-db.get("token").then(value => {
+db.get('token').then(value => {
 	bot.login(value);
-});	
+});
 
 let connectedAmount = 0;
 const http = require('http');
