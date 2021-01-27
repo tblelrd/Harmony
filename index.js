@@ -80,7 +80,6 @@ bot.distube
 
 const Database = require('@replit/database');
 const db = new Database();
-
 db.get('token').then(value => {
 	bot.login(value);
 });
