@@ -4,7 +4,7 @@ const config = require('./config.json');
 const fs = require('fs');
 const DisTube = require('distube');
 
-const now = Date.now();
+let now;
 
 const bot = new Discord.Client();
 bot.currentSong = null;
@@ -41,7 +41,7 @@ bot.once('ready', async () =>{
     readCommands('commands');
     console.log(`Logged in as ${bot.user.username}!`);
 
-		console.log(process.env.TOKEN);
+    now = Date.now();
 });
 
 // Queue status template
