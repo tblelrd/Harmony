@@ -4,7 +4,7 @@
 /* eslint-disable no-unused-vars */
 const {
     prefix,
-} = require('../config.json');
+} = require('../../config.json');
 
 const validatePermissions = (permissions) => {
     // eslint-disable-next-line no-shadow
