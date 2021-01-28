@@ -4,6 +4,8 @@ const config = require('./config.json');
 const fs = require('fs');
 const DisTube = require('distube');
 
+const now = Date.now();
+
 const bot = new Discord.Client();
 bot.currentSong = null;
 
@@ -88,10 +90,10 @@ let connectedAmount = 0;
 const http = require('http');
 const server = http.createServer((req, res) => {
   res.writeHead(200);
-  res.end(connectedAmount.toString());
+  res.end(connectedAmount.toString() + now - Date.now());
 });
 
 server.on('connection', socket => {
-	connectedAmount++;
+    connectedAmount++;
 });
 server.listen(3000);

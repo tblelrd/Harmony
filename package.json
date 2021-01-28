@@ -19,6 +19,7 @@
     "minecraft-api": "0.0.3",
     "minecraft-server-util": "^3.4.2",
     "mongoose": "^5.11.13",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "table": "^6.0.7"
   }
 }
