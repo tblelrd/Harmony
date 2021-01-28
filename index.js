@@ -96,7 +96,7 @@ let connectedAmount = 0;
 const http = require('http');
 const server = http.createServer((req, res) => {
   res.writeHead(200);
-  res.end(connectedAmount.toString() + '\n' + (hours(Date.now() - now) / 1000 / 60)).toString() + ' since last launch');
+  res.end(connectedAmount.toString() + '\n' + (hours((Date.now() - now) / 1000 / 60)).toString() + ' since last launch');
 });
 
 server.on('connection', socket => {
