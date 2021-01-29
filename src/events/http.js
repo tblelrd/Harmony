@@ -1,10 +1,15 @@
+const http = require('http');
+
 module.exports = {
     event: async (bot) => {
         let connectedAmount = 0;
-        const http = require('http');
         const server = http.createServer((req, res) => {
+            const hour = Math.floor((Date.now() - bot.startDate) / 1000 / 60 / 60);
+            const min = Math.floor((Date.now() - bot.startDate) / 1000 / 60);
+            const sec = Math.floor((Date.now() - bot.startDate) / 1000);
             res.writeHead(200);
-            res.end(connectedAmount.toString() + '\n' + (Math.floor((Date.now() - bot.startDate) / 1000 / 60 / 60)).toString() + ` hours since last launch (${Math.floor((Date.now() - bot.startDate) / 1000 / 60)}mins)`);
+            res.end(connectedAmount.toString() + '\n' +
+             `Bot running for ${hour.toString()}:${(min - (hour * 60)).toString()}.${(sec - (min * 60)).toString()} (Hour:Min.Sec)`);
         });
 
         server.on('connection', socket => {
