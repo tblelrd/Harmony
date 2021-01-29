@@ -36,7 +36,7 @@ module.exports = {
             case 'q':
             case 'queue':
                 const queue = bot.distube.getQueue(msg);
-                msg.channel.send('```nim\nCurrent queue:\n' + queue.songs.map((song, id) =>
+                msg.channel.send('```nim\nCurrent queue:\n\n' + queue.songs.map((song, id) =>
                     `${id + 1}. ${song.name} - ${song.formattedDuration}`,
                 ).slice(0, 10).join('\n') + '\n\n' + status(queue) + '```');
             break;
