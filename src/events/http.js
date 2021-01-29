@@ -8,7 +8,7 @@ module.exports = {
             const min = Math.floor((Date.now() - bot.startDate) / 1000 / 60);
             const sec = Math.floor((Date.now() - bot.startDate) / 1000);
             res.writeHead(200);
-            res.end(connectedAmount.toString() + '\n' +
+            res.end('Pinged: ' + connectedAmount.toString() + '\n' +
              `Bot running for ${hour.toString()}:${(min - (hour * 60)).toString()}.${(sec - (min * 60)).toString()} (Hour:Min.Sec)`);
         });
 

@@ -57,17 +57,6 @@ module.exports = {
                 msg.channel.send('Song is `unpaused`');
             break;
 
-						case 'j':
-						case 'join':
-								bot.distube
-						break;
-
-            case 'jump':
-                if(!args[1]) return msg.channel.send('Song number');
-
-                bot.distube.jump(msg, parseInt(args[1]));
-            break;
-
             case 'auto':
             case 'autoplay':
                 const mode = bot.distube.toggleAutoplay(msg);
