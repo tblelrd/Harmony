@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 const hypixel = require('hypixel');
 const client = new hypixel({
-    key: 'a1c67aa3-0916-4cfe-819d-22546dcac453',
+    key: 'bf5d8092-3665-4e93-9b6b-aa83b499e27b',
 });
 
 module.exports = {
