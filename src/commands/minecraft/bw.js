@@ -27,8 +27,14 @@ module.exports = {
                 uuid: player.uuid,
                 games: player.stats.Bedwars.games_played_bedwars_1,
             };
-            const attachment = new MessageAttachment(bedwars(stats), `${stats.name}'s Bedwars Stats`);
-            msg.channel.send(`Here is \`${stats.name}'s\` bedwars stats`, attachment);
+            bedwars(stats)
+            .then(Buffer => {
+                const attachment = new MessageAttachment(Buffer, `${stats.name}'s Bedwars Stats`);
+                msg.channel.send(`Here is \`${stats.name}'s\` bedwars stats`, attachment);
+            })
+            .catch(err => {
+                console.log(err);
+            });
         });
     },
 };
