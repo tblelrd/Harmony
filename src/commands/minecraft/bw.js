@@ -37,8 +37,8 @@ module.exports = {
             };
             bedwars(stats)
             .then(Buffer => {
-                const attachment = new MessageAttachment(Buffer, `${stats.name}-Bedwars-Stats.png`);
-                msg.channel.send(`Here is \`${stats.name}'s\` bedwars stats`, attachment);
+                const attachment = new MessageAttachment(Buffer, `${name}-Bedwars-Stats.png`);
+                msg.channel.send(`Here is \`${name}'s\` bedwars stats`, attachment);
             })
             .catch(err => {
                 console.log(err);
