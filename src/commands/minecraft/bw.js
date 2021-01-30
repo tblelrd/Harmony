@@ -11,9 +11,12 @@ module.exports = {
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
-    callback: (msg, args, text) => {
-        client.getPlayerByUsername(args[0], (err, player) => {
-            if(err) msg.reply('That person does not exist baka');
+    callback: (msg, args, text, bot, raw) => {
+        const rawArgs = raw.split(/[ ]+/);
+        rawArgs.shift();
+
+        client.getPlayerByUsername(rawArgs[0], (err, player) => {
+            if(err) return msg.reply('That person does not exist baka');
             const stats = {
                 kills: player.stats.Bedwars.kills_bedwars,
                 deaths: player.stats.Bedwars.deaths_bedwars,
