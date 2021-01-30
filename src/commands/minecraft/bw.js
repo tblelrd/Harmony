@@ -1,4 +1,5 @@
 const { MessageAttachment } = require('discord.js');
+const MC = require('minecraft-api');
 const hypixel = require('hypixel');
 const client = new hypixel({
     key: 'bf5d8092-3665-4e93-9b6b-aa83b499e27b',
@@ -11,12 +12,16 @@ module.exports = {
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
-    callback: (msg, args, text, bot, raw) => {
-        const rawArgs = raw.split(/[ ]+/);
-        rawArgs.shift();
+    callback: async (msg, args, text) => {
 
-        client.getPlayerByUsername(rawArgs[0], (err, player) => {
-            if(err) return msg.reply('That person does not exist baka');
+        const uuid = await MC.uuidForName(args[0]);
+        if(!uuid) return console.log('Errorrrr');
+        const name = await MC.nameForUuid(uuid);
+        if(!name) return console.log('this shouldnt ever happen');
+
+        client.getPlayerByUsername(name, (err, player) => {
+            if(err) return msg.reply('there wos error'), console.log(err);
+            if(!player) return msg.reply('They don exist');
             const stats = {
                 kills: player.stats.Bedwars.kills_bedwars,
                 deaths: player.stats.Bedwars.deaths_bedwars,
