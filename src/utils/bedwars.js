@@ -72,6 +72,6 @@ module.exports = async (stats) => {
     text = 'Average \nfkills/game: ' + toTDP(fkills, games);
     ctx.fillText(text, halfway, canvas.height - 60);
 
-    const buffer = await canvas.toBuffer;
+    const buffer = canvas.toBuffer();
     return buffer;
 };
