@@ -32,3 +32,9 @@ const db = new Database();
 db.get('token').then(value => {
 	bot.login(value);
 });
+
+
+// test
+const distube = new DisTube(bot, { searchSongs: true, emitNewSongOnly: true });
+
+distube.guildQueues.values.toString();

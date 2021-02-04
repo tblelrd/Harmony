@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 const Discord = require('discord.js');
+const { parse } = require('path');
 const { prefix } = require('../../config.json');
 const status = (queue) => `Loop: ${queue.repeatMode ? queue.repeatMode == 2 ? 'Queue' : 'Song' : 'Off'} |  Autoplay: ${queue.autoplay ? 'On' : 'Off'}`;
 
@@ -73,6 +74,17 @@ module.exports = {
                 .setFooter('Made by Jackack');
 
                 msg.channel.send(h);
+            break;
+
+            case 'rr':
+            case 'remove':
+                console.log(bot.distube.guildQueues.values.toString());
+            break;
+
+            case 'jump':
+            case 'j':
+                bot.distube.jump(msg, parse(args[1]))
+                .catch(err => msg.reply('いいえ、'));
             break;
         }
     },

@@ -12,7 +12,7 @@ module.exports = {
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
-    callback: async (msg, args, text) => {
+    callback: async (msg, args) => {
 
         const uuid = await MC.uuidForName(args[0]);
         if(!uuid) return console.log('Errorrrr');
