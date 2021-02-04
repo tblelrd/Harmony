@@ -35,6 +35,6 @@ db.get('token').then(value => {
 
 
 // test
-const distube = new DisTube(bot, { searchSongs: true, emitNewSongOnly: true });
+// const distube = new DisTube(bot, { searchSongs: true, emitNewSongOnly: true });
 
-distube.guildQueues.values.toString();
+// distube.guildQueues.values.toString();
