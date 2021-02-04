@@ -78,13 +78,12 @@ module.exports = {
 
             case 'rr':
             case 'remove':
-                console.log(bot.distube.guildQueues.values.toString());
+                console.log(bot.distube.guildQueues.values());
             break;
 
             case 'jump':
             case 'j':
-                bot.distube.jump(msg, parse(args[1]))
-                .catch(err => msg.reply('いいえ、'));
+                bot.distube.jump(msg, parse(args[1]));
             break;
         }
     },
