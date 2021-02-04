@@ -83,7 +83,7 @@ module.exports = {
 
             case 'jump':
             case 'j':
-                if(!args[1]) msg.reply('いいえ、');
+                if(!args[1]) return msg.reply('いいえ、');
                 bot.distube.jump(msg, parse(args[1]));
             break;
         }
