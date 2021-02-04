@@ -76,17 +76,16 @@ module.exports = {
                 msg.channel.send(h);
             break;
 
-            case 'rr':
-            case 'remove':
-                console.log(bot.distube.guildQueues.values());
-            break;
+            // case 'rr':
+            // case 'remove':
+            //     console.log(bot.distube.guildQueues.values());
+            // break;
 
-            case 'jump':
-            case 'j':
-                if(!args[1]) return msg.reply('いいえ、');
-                bot.distube.jump(msg, parseInt(args[1]))
-                    .catch(err => msg.channel.send('Invalid song number.'));
-            break;
+            // case 'jump':
+            // case 'j':
+            //     if(!args[1]) return msg.reply('いいえ、');
+            //     bot.distube.jump(msg, parseInt(args[1])).catch(err => msg.channel.send('Invalid song number.'));
+            // break;
         }
     },
 };
