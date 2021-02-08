@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 const { ytKey } = require('../../config.json');
 const { YTSearcher } = require('ytsearcher');
-const playlistSchema = require('./playlistModel');
+const playlistSchema = require('../models/playlistModel');
 
 const queue = new Map();
 const searcher = new YTSearcher({
