@@ -76,7 +76,7 @@ module.exports = {
             case 'saveplaylist':
             case 'spl':
                 if(args[2]) return msg.channel.send('Only one word names please');
-                const name = args[1] ? args[1] : 'MyPlaylist';
+                const name = args[1] ? args[1] : 'playlist';
                 savePlaylist(msg, serverQueue, name);
             break;
 
