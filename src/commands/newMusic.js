@@ -132,6 +132,7 @@ async function execute(msg, serverQueue, args) {
         const queueConstructor = {
             tChannel: msg.channel,
             vChannel: vc,
+            nowPlayng: null,
             connection: null,
             songs: [],
             volume: 10,
@@ -163,7 +164,8 @@ function play (guild, song) {
         serverQueue.tChannel.send('No more songs :(');
         return queue.delete(guild.id);
     }
-    serverQueue.tChannel.send(serverQueue.songs[0] ? `Now playing \`${serverQueue.songs[0].title}\`` : 'No more songs in queue :(');
+    if(serverQueue.nowPlaying) serverQueue.nowPlaying.delete();
+    serverQueue.nowPlaying = serverQueue.tChannel.send(serverQueue.songs[0] ? `Now playing \`${serverQueue.songs[0].title}\`` : 'No more songs in queue :(');
     const dispatcher = serverQueue.connection
     .play(ytdl(song.url))
     .on('finish', () => {

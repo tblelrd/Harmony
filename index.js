@@ -1,3 +1,9 @@
+/*
+TODO:
+  -No spam
+    -
+*/
+
 const Discord = require('discord.js');
 // const DisTube = require('distube');
 const mongoose = require('mongoose');
