@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const DisTube = require('distube');
+const mongoose = require('mongoose');
+
 const config = require('./config.json');
 const registery = require('./src/utils/register');
 
@@ -18,6 +20,7 @@ bot.once('ready', async () =>{
     })
     .catch(console.error);
 
+    mongoose.connect('mongodb+srv://televox:getjacked@jackack-bot.r14ha.mongodb.net/harmony', { useNewUrlParser: true, useUnifiedTopology: true });
     registery.registerCommands(bot, 'commands');
     registery.registerEvents(bot, 'events');
 
