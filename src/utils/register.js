@@ -51,7 +51,6 @@ const readEvents = async (bot, dir) => {
             readEvents(bot, path.join(dir, file));
         } else if (file.endsWith('.js') && file !== eventBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
-            eventBase(bot, options);
             if (!options.event) {
                 eventStatus.push(
                     [`${c.cyan(file)}`, `${c.bgRed('Failed')}`],
@@ -60,6 +59,7 @@ const readEvents = async (bot, dir) => {
                 eventStatus.push(
                     [`${c.cyan(file)}`, `${c.bgGreen('Loaded')}`],
                 );
+                eventBase(bot, options);
             }
         }
     }
