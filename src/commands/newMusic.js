@@ -23,7 +23,7 @@ module.exports = {
         const serverQueue = queue.get(guild.id);
         const now = Date.now();
 
-        const command = args[0].toLowerCase();
+        const command = args[0];
 
         switch(command) {
             case 'play':
