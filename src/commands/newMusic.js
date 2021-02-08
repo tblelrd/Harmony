@@ -96,6 +96,11 @@ module.exports = {
                 loadPlaylist(msg, serverQueue, args[1]);
             break;
 
+            case 'shuffle':
+            case 'sh':
+                shuffleQ(msg, serverQueue);
+            break;
+
             case 'h':
             case 'help':
                 const h = new Discord.MessageEmbed()
@@ -181,7 +186,6 @@ async function play (guild, song) {
 }
 function stop (msg, serverQueue) {
     if(!serverQueue) return msg.channel.send('U havent event played a song yet dumbass');
-    if (!msg.member.voice.channel) return msg.channel.send('you aint in a vc ;-;');
     serverQueue.songs = [];
     serverQueue.connection.dispatcher.end();
 }
@@ -321,4 +325,31 @@ async function loadPlaylist(msg, serverQueue, name) {
             }
         }
     });
+}
+function shuffleQ(msg, serverQueue) {
+    if(!serverQueue) return msg.channel.send('U havent event played a song yet dumbass');
+    if(!serverQueue.connection) return msg.channel.send('no music playin');
+    if(!msg.member.voice.channel) return msg.channel.send('You aint in a vc ;-;');
+
+    const newQueue = shuffle(serverQueue.songs);
+
+    serverQueue.songs = newQueue;
+    msg.reply('Shuffled');
+}
+function shuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
 }
