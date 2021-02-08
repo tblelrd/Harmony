@@ -157,7 +157,7 @@ async function execute(msg, serverQueue, args) {
         return msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
     }
 }
-function play (guild, song) {
+async function play (guild, song) {
     const serverQueue = queue.get(guild.id);
     if(!song) {
         serverQueue.vChannel.leave();
@@ -165,7 +165,7 @@ function play (guild, song) {
         return queue.delete(guild.id);
     }
     if(serverQueue.nowPlaying) serverQueue.nowPlaying.delete();
-    serverQueue.nowPlaying = serverQueue.tChannel.send(serverQueue.songs[0] ? `Now playing \`${serverQueue.songs[0].title}\`` : 'No more songs in queue :(');
+    serverQueue.nowPlaying = await serverQueue.tChannel.send(serverQueue.songs[0] ? `Now playing \`${serverQueue.songs[0].title}\`` : 'No more songs in queue :(');
     const dispatcher = serverQueue.connection
     .play(ytdl(song.url))
     .on('finish', () => {
