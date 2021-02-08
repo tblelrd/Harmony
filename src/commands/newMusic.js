@@ -14,7 +14,7 @@ const searcher = new YTSearcher({
 });
 
 module.exports = {
-    commands: ['nm', 'mm'],
+    commands: ['music', 'm'],
     expectedArgs: '<command> [<other>]',
     minArgs: 1,
     callback: (msg, args, text, bot) => {
@@ -94,6 +94,18 @@ module.exports = {
             case 'loadplaylist':
             case 'lpl':
                 loadPlaylist(msg, serverQueue, args[1]);
+            break;
+
+            case 'h':
+            case 'help':
+                const h = new Discord.MessageEmbed()
+                .setTitle('Help')
+                .setThumbnail(bot.user.avatarURL())
+                .setColor('#000000')
+                .addField('Commands', '`play` `stop` `queue` `skip` `loop` `pause` `resume` `remove` `saveplaylist` `loadplaylist` `getplaylists` `help`')
+                .setFooter('Made by Jackack');
+
+                msg.channel.send(h);
             break;
         }
     },
