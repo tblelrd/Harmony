@@ -107,7 +107,7 @@ module.exports = {
                 .setTitle('Help')
                 .setThumbnail(bot.user.avatarURL())
                 .setColor('#000000')
-                .addField('Commands', '`play` `stop` `queue` `skip` `loop` `pause` `resume` `remove` `saveplaylist` `loadplaylist` `getplaylists` `help`')
+                .addField('Commands', '`play` `stop` `queue` `skip` `loop` `shuffle` `pause` `resume` `remove` `saveplaylist` `loadplaylist` `getplaylists` `help`')
                 .setFooter('Made by Jackack');
 
                 msg.channel.send(h);
@@ -306,8 +306,11 @@ async function loadPlaylist(msg, serverQueue, name) {
             // queueConstructor.songs.push(playlist.songs[0]);
             for (const song of playlist.songs) {
                 queueConstructor.songs.push(song);
-                msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
+                // msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
             }
+            msg.channel.send(playlist.songs.map((song, id) => '```nim\n Songs added:\n\n' +
+                `${id + 1}. ${song.title}` + '```',
+            ).join('\n'));
 
             try {
                 const connection = await vc.join();
@@ -321,8 +324,11 @@ async function loadPlaylist(msg, serverQueue, name) {
         } else {
             for (const song of playlist.songs) {
                 serverQueue.songs.push(song);
-                return msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
+                // return msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
             }
+            msg.channel.send(playlist.songs.map((song, id) => '```nim\n Songs added:\n\n' +
+                `${id + 1}. ${song.title}` + '```',
+            ).join('\n'));
         }
     });
 }

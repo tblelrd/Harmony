@@ -1,7 +1,8 @@
 /*
 TODO:
-  -No spam
-    -
+  -No spam ✔
+  -Better import playlist (if possible)
+  -
 */
 
 const Discord = require('discord.js');
