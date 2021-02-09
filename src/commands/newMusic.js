@@ -308,9 +308,9 @@ async function loadPlaylist(msg, serverQueue, name) {
                 queueConstructor.songs.push(song);
                 // msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
             }
-            msg.channel.send(playlist.songs.map((song, id) => '```nim\n Songs added:\n\n' +
-                `${id + 1}. ${song.title}` + '```',
-            ).join('\n'));
+            msg.channel.send('```nim\n Songs added:\n\n' + playlist.songs.map((song, id) =>
+                `${id + 1}. ${song.title}`,
+            ).join('\n') + '```');
 
             try {
                 const connection = await vc.join();
@@ -326,9 +326,9 @@ async function loadPlaylist(msg, serverQueue, name) {
                 serverQueue.songs.push(song);
                 // return msg.channel.send(`Added \`${song.title}\` to the \`queue\``);
             }
-            msg.channel.send(playlist.songs.map((song, id) => '```nim\n Songs added:\n\n' +
-                `${id + 1}. ${song.title}` + '```',
-            ).join('\n'));
+            msg.channel.send('```nim\n Songs added:\n\n' + playlist.songs.map((song, id) =>
+                `${id + 1}. ${song.title}`,
+            ).join('\n') + '```');
         }
     });
 }
