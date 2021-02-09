@@ -40,7 +40,7 @@ module.exports = {
 
             case 'skip':
             case 's':
-                skip(msg, serverQueue);
+                skip(msg, serverQueue, bot);
             break;
 
             case 'pause':
@@ -187,13 +187,25 @@ async function play (guild, song) {
 function stop (msg, serverQueue) {
     if(!serverQueue) return msg.channel.send('U havent event played a song yet dumbass');
     serverQueue.songs = [];
-    serverQueue.connection.dispatcher.end();
+    try {
+        serverQueue.connection.dispatcher.end();
+    } catch (err) {
+        console.err(err);
+        msg.reply('there was error');
+        serverQueue.connection.disconnect();
+    }
 }
-function skip (msg, serverQueue) {
+function skip (msg, serverQueue, bot) {
     if(!serverQueue) return msg.channel.send('U havent event played a song yet dumbass');
     if (!msg.member.voice.channel) return msg.channel.send('you aint in a vc ;-;');
     if(!serverQueue) return msg.channel.send('nothing to skip lmao');
-    serverQueue.connection.dispatcher.end();
+    try {
+        serverQueue.connection.dispatcher.end();
+    } catch (err) {
+        console.err(err);
+        msg.reply('there was error');
+        serverQueue.connection.disconnect();
+    }
 }
 function pause (msg, serverQueue) {
     if(!serverQueue) return msg.channel.send('U havent event played a song yet dumbass');
@@ -340,7 +352,8 @@ function shuffleQ(msg, serverQueue) {
     const newQueue = shuffle(serverQueue.songs);
 
     serverQueue.songs = newQueue;
-    msg.reply('Shuffled');
+    msg.channel.send('Shuffled');
+    displayQ(msg, serverQueue);
 }
 function shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
