@@ -133,6 +133,7 @@ async function execute(msg, serverQueue, args) {
         vLength: songInfo.videoDetails.lengthSeconds != 0 ? fmtMSS(songInfo.videoDetails.lengthSeconds) : 'LIVE',
     };
 
+    msg.react('👍');
     if(!serverQueue) {
         const queueConstructor = {
             tChannel: msg.channel,
