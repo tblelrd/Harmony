@@ -169,7 +169,7 @@ async function play (guild, song) {
     const serverQueue = queue.get(guild.id);
     if(!song) {
         serverQueue.vChannel.leave();
-        serverQueue.tChannel.send('No more songs :(');
+        serverQueue.tChannel.send('i leve :(');
         return queue.delete(guild.id);
     }
     if(serverQueue.nowPlaying) serverQueue.nowPlaying.delete();
