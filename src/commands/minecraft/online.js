@@ -4,11 +4,11 @@ const client = new hypixel({
 });
 
 module.exports = {
-    commands: ['honline', 'hon'],
+    commands: ['honline', 'hon', 'hypixelonline', 'hypixelon'],
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
-    callback: (msg, args, text) => {
+    callback: (msg, args) => {
 
         client.getPlayerByUsername(args[0], (err, player) => {
             if(err) throw err;

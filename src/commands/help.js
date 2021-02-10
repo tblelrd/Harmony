@@ -4,11 +4,11 @@ const { prefix } = require('../../config.json');
 module.exports = {
     commands: ['help', 'h'],
     maxArgs: 0,
-    callback: (msg, args, text) => {
+    callback: (msg) => {
         const h = new Discord.MessageEmbed()
-        .addField('Music', `\`${prefix}music\`and then \`play\` \`stop\` \`queue\` \`skip\` \`loop\` \`pause\` \`resume\` \`help\``)
+        .addField('Music', `\`${prefix}music\` \`help\``)
         .addField('Other', '`ping`')
-				.addField('Minecraft', '`Honline` `namehistory` `kdr` `server`')
+				.addField('Minecraft', '`hypixelonline` `namehistory` `kdr` `server`')
         .setFooter('Made by Jackack');
 
         msg.channel.send(h);
