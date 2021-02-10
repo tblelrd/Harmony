@@ -1,7 +1,7 @@
 /*
 TODO:
   -No spam ✔
-  -Better import playlist (if possible)
+  -Better import playlist (if possible) ✔
   -
 */
 

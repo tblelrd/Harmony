@@ -189,8 +189,10 @@ function stop (msg, serverQueue) {
     serverQueue.songs = [];
     try {
         serverQueue.connection.dispatcher.end();
+        msg.react(':thumbsup:');
     } catch (err) {
-        console.err(err);
+        console.error(err);
+        msg.react(':thumbsdown:');
         msg.reply('there was error');
         serverQueue.connection.disconnect();
     }
@@ -201,8 +203,10 @@ function skip (msg, serverQueue, bot) {
     if(!serverQueue) return msg.channel.send('nothing to skip lmao');
     try {
         serverQueue.connection.dispatcher.end();
+        msg.react(':thumbsup:');
     } catch (err) {
-        console.err(err);
+        console.error(err);
+        msg.react(':thumbsdown:');
         msg.reply('there was error');
         serverQueue.connection.disconnect();
     }
@@ -214,6 +218,7 @@ function pause (msg, serverQueue) {
     if(serverQueue.connection.dispatcher.paused) return msg.channel.send('Bot already paused baaaaaka');
 
     serverQueue.connection.dispatcher.pause();
+    msg.react(':thumbsup:');
     msg.channel.send('Song has been `paused`');
 }
 function resume (msg, serverQueue) {
@@ -223,6 +228,7 @@ function resume (msg, serverQueue) {
     if(serverQueue.connection.dispatcher.resumed) return msg.channel.send('Bot already playing baaaaaka');
 
     serverQueue.connection.dispatcher.resume();
+    msg.react(':thumbsup:');
     msg.channel.send('Song has been `resumed`');
 }
 function displayQ (msg, serverQueue) {
@@ -231,6 +237,7 @@ function displayQ (msg, serverQueue) {
     const list = serverQueue.songs.map((song, id) =>
         `${id + 1}. ${song.title} - ${song.vLength}`,
     ).join('\n');
+    msg.react(':thumbsup:');
     msg.channel.send('```nim\n---Song Queue---\n\n' + list + `\n\n${serverQueue.loop ? 'Looping Queue' : 'Loop off'}` + '```');
 }
 function loopQ (msg, serverQueue) {
@@ -240,6 +247,7 @@ function loopQ (msg, serverQueue) {
 
     serverQueue.loop = !serverQueue.loop;
 
+    msg.react(':thumbsup:');
     return msg.channel.send(`Toggled loop to \`${serverQueue.loop ? 'Queue' : 'Off'}\``);
 }
 function remove (msg, serverQueue, id) {
@@ -248,6 +256,7 @@ function remove (msg, serverQueue, id) {
     if(!msg.member.voice.channel) return msg.channel.send('You aint in a vc ;-;');
     if(!serverQueue.songs[id - 1]) return msg.channel.send('Song doesnt exist loser');
 
+    msg.react(':thumbsup:');
     msg.channel.send(`Removed song: \`${serverQueue.songs[id - 1].title}\``);
     serverQueue.songs.splice(id - 1, 1);
     if(id - 1 == 0) {
@@ -271,6 +280,7 @@ function savePlaylist (msg, serverQueue, name) {
         msg.reply(`Updated playlist: \`${name}\``);
     });
 
+    msg.react(':thumbsup:');
     playlist.save()
     .then((res) => {
         console.log(`${res.userID} saved a playlist!`);
@@ -279,6 +289,7 @@ function savePlaylist (msg, serverQueue, name) {
     .catch(console.error);
 }
 function getPlaylists (msg) {
+    msg.react(':thumbsup:');
     playlistSchema.find({ userID: msg.author.id }, (err, playlists) => {
         if(!playlists[0]) return msg.channel.send('You dont have any saved playlists!');
         // if(typeof playlists == 'string') {
@@ -290,6 +301,7 @@ function getPlaylists (msg) {
     });
 }
 function deletePlaylist(msg, name) {
+    msg.react(':thumbsup:');
     playlistSchema.findOneAndDelete({ name: name, userID: msg.author.id }, (err, playlist) => {
         if(!playlist) return msg.reply('doesnt exist baaaaka');
         msg.channel.send('Succesfully deleted playlist');
@@ -301,6 +313,7 @@ async function loadPlaylist(msg, serverQueue, name) {
     const vc = msg.member.voice.channel;
     if(!vc) return msg.reply('You aint in a vc');
 
+    msg.react(':thumbsup:');
     playlistSchema.findOne({ name: name, userID: msg.author.id }, async (err, playlist) => {
         if(!playlist) return msg.channel.send('Nuh uh');
         if(!serverQueue) {
@@ -352,6 +365,7 @@ function shuffleQ(msg, serverQueue) {
     const newQueue = shuffle(serverQueue.songs);
 
     serverQueue.songs = newQueue;
+    msg.react(':thumbsup:');
     msg.channel.send('Shuffled');
     displayQ(msg, serverQueue);
 }
