@@ -1,6 +1,5 @@
 const { MessageAttachment } = require('discord.js');
 const server = require('minecraft-server-util');
-let ports = 25565;
 
 module.exports = {
     commands: ['server', 'mcs'],
@@ -8,6 +7,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: 2,
     callback: async (msg, args, text) => {
+        let ports = 25565;
         if (args[1]) ports = parseInt(args[1]);
 
         const check = await msg.channel.send(`Checking \`${args[0]}:${ports}\``);
