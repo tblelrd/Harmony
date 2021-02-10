@@ -107,7 +107,9 @@ module.exports = {
                 .setTitle('Help')
                 .setThumbnail(bot.user.avatarURL())
                 .setColor('#000000')
-                .addField('Commands', '`play` `stop` `queue` `skip` `loop` `shuffle` `pause` `resume` `remove` `saveplaylist` `loadplaylist` `getplaylists` `help`')
+                .addField('Main', '`play` `stop` `pause` `resume` `help`')
+                .addField('Queue', '`queue` `skip` `loop` `shuffle` `remove`')
+                .addField('Playlist', '`saveplaylist` `loadplaylist` `getplaylist`')
                 .setFooter('Made by Jackack');
 
                 msg.channel.send(h);
