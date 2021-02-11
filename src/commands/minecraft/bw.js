@@ -22,27 +22,32 @@ module.exports = {
         client.getPlayerByUsername(name, (err, player) => {
             if(err) return msg.reply('there wos error'), console.log(err);
             if(!player) return msg.reply('They don exist');
-            const stats = {
-                kills: player.stats.Bedwars.kills_bedwars,
-                deaths: player.stats.Bedwars.deaths_bedwars,
-                fkills: player.stats.Bedwars.final_kills_bedwars,
-                fdeaths: player.stats.Bedwars.final_deaths_bedwars,
-                bbreak: player.stats.Bedwars.beds_broken_bedwars,
-                blosts: player.stats.Bedwars.beds_lost_bedwars,
-                losses: player.stats.Bedwars.losses_bedwars,
-                wins: player.stats.Bedwars.wins_bedwars,
-                name: player.playername,
-                uuid: player.uuid,
-                games: player.stats.Bedwars.games_played_bedwars_1,
-            };
-            bedwars(stats)
-            .then(Buffer => {
-                const attachment = new MessageAttachment(Buffer, `${name}-Bedwars-Stats.png`);
-                msg.channel.send(`Here is \`${name}'s\` bedwars stats`, attachment);
-            })
-            .catch(err => {
+            try {
+                const stats = {
+                    kills: player.stats.Bedwars.kills_bedwars,
+                    deaths: player.stats.Bedwars.deaths_bedwars,
+                    fkills: player.stats.Bedwars.final_kills_bedwars,
+                    fdeaths: player.stats.Bedwars.final_deaths_bedwars,
+                    bbreak: player.stats.Bedwars.beds_broken_bedwars,
+                    blosts: player.stats.Bedwars.beds_lost_bedwars,
+                    losses: player.stats.Bedwars.losses_bedwars,
+                    wins: player.stats.Bedwars.wins_bedwars,
+                    name: player.playername,
+                    uuid: player.uuid,
+                    games: player.stats.Bedwars.games_played_bedwars_1,
+                };
+                bedwars(stats)
+                .then(Buffer => {
+                    const attachment = new MessageAttachment(Buffer, `${name}-Bedwars-Stats.png`);
+                    msg.channel.send(`Here is \`${name}'s\` bedwars stats`, attachment);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            } catch(err) {
                 console.log(err);
-            });
+                msg.reply('There was error :(');
+            }
         });
     },
 };
