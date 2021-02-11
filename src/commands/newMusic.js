@@ -135,7 +135,6 @@ async function execute(msg, serverQueue, args) {
         vLength: songInfo.videoDetails.lengthSeconds != 0 ? fmtMSS(songInfo.videoDetails.lengthSeconds) : 'LIVE',
     };
 
-    msg.react('👍');
     if(!serverQueue) {
         const queueConstructor = {
             tChannel: msg.channel,
@@ -155,8 +154,10 @@ async function execute(msg, serverQueue, args) {
             const connection = await vc.join();
             queueConstructor.connection = connection;
             play(msg.guild, queueConstructor.songs[0]);
+            msg.react('👍');
         } catch (error) {
             console.error(error);
+            msg.react('👎');
             queue.delete(msg.guild.id);
             return msg.channel.send('Unable to join vc :(');
         }
@@ -195,6 +196,7 @@ function stop (msg, serverQueue) {
         msg.react('👍');
     } catch (err) {
         console.error(err);
+        queue.delete(msg.guild.id);
         msg.react('👎');
         msg.reply('there was error');
         serverQueue.connection.disconnect();
@@ -209,6 +211,7 @@ function skip (msg, serverQueue, bot) {
         msg.react('👍');
     } catch (err) {
         console.error(err);
+        queue.delete(msg.guild.id);
         msg.react('👎');
         msg.reply('there was error');
         serverQueue.connection.disconnect();
