@@ -13,7 +13,7 @@ module.exports = {
         const e = new MessageEmbed()
         .setTitle(data.alternative_titles.en || data.title)
         .setImage(data.main_picture.large)
-        .setFooter(data.studios[0].name || 'No studio specified')
+        .setFooter(data.authors[0].node.first_name || 'No author specified')
         .setURL('https://myanimelist.net/anime/' + data.id)
         .addField('Rank', `\`#${data.rank}\``, true)
         .addField('Popularity', `\`#${data.popularity}\``, true)
