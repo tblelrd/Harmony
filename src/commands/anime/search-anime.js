@@ -20,7 +20,7 @@ module.exports = {
         .addField('Popularity', `\`#${data.popularity}\``, true)
         .addField('Source', `\`${data.source || 'None'}\``)
         .addField('Genres', `\`${data.genres.map((genre) => `${genre.name}`).join(', ') || 'Somehow this anime doesnt have any Genres'}\``, true)
-        .addField('Episodes', `\`${data.num_episodes}\``)
+        .addField('Episodes', `\`${data.num_episodes}\``, true)
         .addField('Episode duration', `\`${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}\``, true);
 
         await msg.channel.send(e);
