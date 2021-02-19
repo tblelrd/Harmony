@@ -3,7 +3,7 @@ const { Mal } = require('node-myanimelist');
 const auth = Mal.auth('ec4cca9b42e3849db83b46986639783b');
 
 module.exports = {
-    commands: ['animesearch', 'anims'],
+    commands: ['animesearch', 'anims', 'anime'],
     expectedArgs: '<name>',
     minArgs: 1,
     callback: async (msg, args, text) => {
