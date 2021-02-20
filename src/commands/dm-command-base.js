@@ -23,7 +23,7 @@ module.exports = (client, commandOptions) => {
 
     // Listen for messages
     client.on('message', msg => {
-        if(msg.author.bot || !msg.channel.type === 'dm') return;
+        if(msg.author.bot || msg.guild) return;
         const {
             content,
         } = msg;
