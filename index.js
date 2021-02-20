@@ -2,8 +2,8 @@
 TODO:
   -No spam ✔
   -Better import playlist (if possible) ✔
-  -
 */
+// My id 500648375297900545
 
 const Discord = require('discord.js');
 // const DisTube = require('distube');

@@ -74,6 +74,7 @@ const readDmCommands = async (bot, dir) => {
             if (!options.commands || !options.dm || !options.callback) {
                 //
             } else {
+                console.log(file + ' loaded');
                 dmCommandBase(bot, options);
             }
         }
