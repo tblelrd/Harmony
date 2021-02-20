@@ -8,23 +8,27 @@ module.exports = {
     minArgs: 1,
     dm: true,
     callback: async (msg, args, text) => {
-        const search = await searchManga(text);
-        const data = search.data[0].node;
+        try {
+            const search = await searchManga(text);
+            const data = search.data[0].node;
 
-        const e = new MessageEmbed()
-        .setTitle(data.alternative_titles.en || data.title)
-        .setImage(data.main_picture.large)
-        .setFooter(data.authors[0].node.first_name || 'No author specified')
-        .setURL('https://myanimelist.net/manga/' + data.id)
-        .addField('Rank', `\`#${data.rank}\``, true)
-        .addField('Popularity', `\`#${data.popularity}\``, true)
-        .addField('Status', `\`${data.status}\``, true)
-        .addField('Genres', data.genres.map((genre) => `\`${genre.name}\``).join(' ') || 'Somehow this manga doesnt have any Genres')
-        .addField('Chapters', `\`${data.num_chapters || 'Unknown'}\``, true)
-        .addField('Volumes', `\`${data.num_volumes || 'Unknown'}\``, true);
+            const e = new MessageEmbed()
+            .setTitle(data.alternative_titles.en || data.title)
+            .setImage(data.main_picture.large)
+            .setFooter(data.authors[0].node.first_name || 'No author specified')
+            .setURL('https://myanimelist.net/manga/' + data.id)
+            .addField('Rank', `\`#${data.rank}\``, true)
+            .addField('Popularity', `\`#${data.popularity}\``, true)
+            .addField('Status', `\`${data.status}\``, true)
+            .addField('Genres', data.genres.map((genre) => `\`${genre.name}\``).join(' ') || 'Somehow this manga doesnt have any Genres')
+            .addField('Chapters', `\`${data.num_chapters || 'Unknown'}\``, true)
+            .addField('Volumes', `\`${data.num_volumes || 'Unknown'}\``, true);
 
-        await msg.channel.send(e);
-        msg.channel.send(`\`\`\`${data.synopsis}\`\`\``);
+            await msg.channel.send(e);
+            msg.channel.send(`\`\`\`${data.synopsis}\`\`\``);
+        } catch {
+            msg.reply('Couldn\'t find the manga :(');
+        }
     },
 };
 

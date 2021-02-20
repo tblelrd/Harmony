@@ -8,24 +8,28 @@ module.exports = {
     minArgs: 1,
     dm: true,
     callback: async (msg, args, text) => {
-        const search = await searchAnime(text);
-        const data = search.data[0].node;
+        try {
+            const search = await searchAnime(text);
+            const data = search.data[0].node;
 
-        const e = new MessageEmbed()
-        .setTitle(data.alternative_titles.en || data.title)
-        .setImage(data.main_picture.large)
-        .setFooter(data.studios[0].name || 'No studio specified')
-        .setURL('https://myanimelist.net/anime/' + data.id)
-        .addField('Rank', `\`#${data.rank}\``, true)
-        .addField('Rating', `\`${data.rating}\``, true)
-        .addField('Popularity', `\`#${data.popularity}\``, true)
-        .addField('Source', `\`${data.source || 'None'}\``)
-        .addField('Genres', data.genres.map((genre) => `\`${genre.name}\``).join(' ') || 'Somehow this anime doesnt have any Genres', true)
-        .addField('Episodes', `\`${data.num_episodes}\``, true)
-        .addField('Episode duration', `\`${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}\``, true);
+            const e = new MessageEmbed()
+            .setTitle(data.alternative_titles.en || data.title)
+            .setImage(data.main_picture.large)
+            .setFooter(data.studios[0].name || 'No studio specified')
+            .setURL('https://myanimelist.net/anime/' + data.id)
+            .addField('Rank', `\`#${data.rank}\``, true)
+            .addField('Rating', `\`${data.rating}\``, true)
+            .addField('Popularity', `\`#${data.popularity}\``, true)
+            .addField('Source', `\`${data.source || 'None'}\``)
+            .addField('Genres', data.genres.map((genre) => `\`${genre.name}\``).join(' ') || 'Somehow this anime doesnt have any Genres', true)
+            .addField('Episodes', `\`${data.num_episodes}\``, true)
+            .addField('Episode duration', `\`${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}\``, true);
 
-        await msg.channel.send(e);
-        msg.channel.send(`\`\`\`${data.synopsis}\`\`\``);
+            await msg.channel.send(e);
+            msg.channel.send(`\`\`\`${data.synopsis}\`\`\``);
+        } catch {
+            msg.reply('Couldn\'t find the anime :(');
+        }
     },
 };
 
