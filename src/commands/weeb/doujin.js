@@ -7,7 +7,7 @@ module.exports = {
     expectedArgs: '<inconspicuous 6 digit number>',
     minArgs: 1,
     maxArgs: 1,
-    permision: ['ADMINISTRATOR'],
+    permisions: ['ADMINISTRATOR'],
     callback: async (msg, args) => {
         const data = await findDoujin(args[0]);
         if(!data) msg.reply('Invalid id or smthn');
