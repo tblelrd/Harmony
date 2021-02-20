@@ -30,6 +30,7 @@ bot.once('ready', async () =>{
     mongoose.connect('mongodb+srv://televox:getjacked@jackack-bot.r14ha.mongodb.net/harmony', { useNewUrlParser: true, useUnifiedTopology: true });
     registery.registerCommands(bot, 'commands');
     registery.registerEvents(bot, 'events');
+    registery.registerDm(bot, 'commands');
 
 
     console.log(`Logged in as ${bot.user.username}!`);

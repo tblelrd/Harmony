@@ -4,6 +4,7 @@ const { prefix } = require('../../config.json');
 module.exports = {
     commands: ['help', 'h'],
     maxArgs: 0,
+    dm: true,
     callback: (msg) => {
         const h = new Discord.MessageEmbed()
         .addField('Music', `\`${prefix}music\` \`help\``)

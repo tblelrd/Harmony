@@ -6,6 +6,7 @@ module.exports = {
     commands: ['mangasearch', 'manga'],
     expectedArgs: '<name>',
     minArgs: 1,
+    dm: true,
     callback: async (msg, args, text) => {
         const search = await searchManga(text);
         const data = search.data[0].node;

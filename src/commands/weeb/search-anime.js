@@ -6,6 +6,7 @@ module.exports = {
     commands: ['animesearch', 'anims', 'anime'],
     expectedArgs: '<name>',
     minArgs: 1,
+    dm: true,
     callback: async (msg, args, text) => {
         const search = await searchAnime(text);
         const data = search.data[0].node;

@@ -19,6 +19,7 @@ module.exports = {
 
         msg.channel.send(e);
     },
+    dm: true,
 };
 
 const findDoujin = async (id) => {

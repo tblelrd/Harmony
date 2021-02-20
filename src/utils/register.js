@@ -16,6 +16,8 @@ const commandBaseName = 'command-base.js';
 const commandBase = require('../commands/command-base');
 const eventBaseName = 'event-base.js';
 const eventBase = require('../events/event-base');
+const dmCommandBaseName = 'dm-command-base.js';
+const dmCommandBase = require('../commands/dm-command-base');
 
 const readCommands = async (bot, dir) => {
     const files = fs.readdirSync(path.join(__dirname, '../', dir));
@@ -25,11 +27,7 @@ const readCommands = async (bot, dir) => {
             readCommands(bot, path.join(dir, file));
         } else if (file.endsWith('.js') && file !== commandBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
-            if (!options.commands) {
-                commandStatus.push(
-                    [`${c.cyan(file)}`, `${c.bgRed('Failed')}`],
-                );
-            } else if (!options.callback) {
+            if (!options.commands || !options.callback) {
                 commandStatus.push(
                     [`${c.cyan(file)}`, `${c.bgRed('Failed')}`],
                 );
@@ -65,6 +63,23 @@ const readEvents = async (bot, dir) => {
     }
 };
 
+const readDmCommands = async (bot, dir) => {
+    const files = fs.readdirSync(path.join(__dirname, '../', dir));
+    for (const file of files) {
+        const stat = fs.lstatSync(path.join(__dirname, '../', dir, file));
+        if (stat.isDirectory()) {
+            readCommands(bot, path.join(dir, file));
+        } else if (file.endsWith('.js') && file !== dmCommandBaseName) {
+            const options = require(path.join(__dirname, '../', dir, file));
+            if (!options.commands || !options.dm || !options.callback) {
+                //
+            } else {
+                dmCommandBase(bot, options);
+            }
+        }
+    }
+};
+
 module.exports = {
     registerEvents: async (bot, dir) => {
         readEvents(bot, dir);
@@ -73,5 +88,8 @@ module.exports = {
     registerCommands: async (bot, dir) => {
         readCommands(bot, dir);
         console.log(table(commandStatus, tableConfig.options));
+    },
+    registerDm: async (bot, dir) => {
+        readDmCommands(bot, dir);
     },
 };
