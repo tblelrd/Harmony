@@ -10,6 +10,7 @@ module.exports = {
     permision: ['ADMINISTRATOR'],
     callback: async (msg, args) => {
         const data = await findDoujin(args[0]);
+        if(!data) msg.reply('Invalid id or smthn');
 
         const e = new MessageEmbed()
         .setTitle(data.title)
@@ -24,6 +25,7 @@ const findDoujin = async (id) => {
     const url = `https://nhentai.to/g/${id}`;
 
     const html = await rp(url);
+    if(!html) return;
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
     const title = $('div[id=info-block] > div[id=info] > h1', html).html();
     const data = {
