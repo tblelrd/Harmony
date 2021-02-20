@@ -14,7 +14,7 @@ module.exports = {
         .setTitle(data.alternative_titles.en || data.title)
         .setImage(data.main_picture.large)
         .setFooter(data.authors[0].node.first_name || 'No author specified')
-        .setURL('https://myanimelist.net/anime/' + data.id)
+        .setURL('https://myanimelist.net/manga/' + data.id)
         .addField('Rank', `\`#${data.rank}\``, true)
         .addField('Popularity', `\`#${data.popularity}\``, true)
         .addField('Status', `\`${data.status}\``, true)
