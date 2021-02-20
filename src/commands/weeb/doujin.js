@@ -13,6 +13,7 @@ module.exports = {
 
         const e = new MessageEmbed()
         .setTitle(data.title)
+        .setURL(data.url)
         .setImage(data.img);
 
         msg.channel.send(e);
@@ -28,6 +29,7 @@ const findDoujin = async (id) => {
     const data = {
         img: img,
         title: title,
+        url: url,
     };
     return data;
 };
