@@ -87,7 +87,7 @@ module.exports = (client, commandOptions) => {
 
                 // Permission check
                 for (const permission of permissions) {
-                    if (!member.hasPermission(permissions)) {
+                    if (!member.hasPermission(permission)) {
                         msg.reply(permissionError);
                         return;
                     }
