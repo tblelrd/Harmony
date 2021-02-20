@@ -9,15 +9,19 @@ module.exports = {
     maxArgs: 1,
     permissions: ['ADMINISTRATOR'],
     callback: async (msg, args) => {
-        const data = await findDoujin(args[0]);
-        if(!data) msg.reply('Invalid id or smthn');
+        try {
+            const data = await findDoujin(args[0]);
+            if(!data) msg.reply('Invalid id or smthn');
 
-        const e = new MessageEmbed()
-        .setTitle(data.title)
-        .setURL(data.url)
-        .setImage(data.img);
+            const e = new MessageEmbed()
+            .setTitle(data.title)
+            .setURL(data.url)
+            .setImage(data.img);
 
-        msg.channel.send(e);
+            msg.channel.send(e);
+        } catch {
+            msg.reply('error');
+        }
     },
     dm: true,
 };
