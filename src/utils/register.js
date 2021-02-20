@@ -25,7 +25,7 @@ const readCommands = async (bot, dir) => {
         const stat = fs.lstatSync(path.join(__dirname, '../', dir, file));
         if (stat.isDirectory()) {
             readCommands(bot, path.join(dir, file));
-        } else if (file.endsWith('.js') && file !== commandBaseName) {
+        } else if (file.endsWith('.js') && file !== commandBaseName && file !== dmCommandBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
             if (!options.commands || !options.callback) {
                 commandStatus.push(
@@ -68,8 +68,8 @@ const readDmCommands = async (bot, dir) => {
     for (const file of files) {
         const stat = fs.lstatSync(path.join(__dirname, '../', dir, file));
         if (stat.isDirectory()) {
-            readCommands(bot, path.join(dir, file));
-        } else if (file.endsWith('.js') && file !== dmCommandBaseName) {
+            readDmCommands(bot, path.join(dir, file));
+        } else if (file.endsWith('.js') && file !== dmCommandBaseName && file !== commandBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
             if (!options.commands || !options.dm || !options.callback) {
                 //
