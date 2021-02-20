@@ -36,7 +36,7 @@ bot.once('ready', async () =>{
 
     bot.startDate = Date.now();
 });
-
+bot.setMaxListeners(0);
 const Database = require('@replit/database');
 const db = new Database();
 db.get('token').then(value => {
