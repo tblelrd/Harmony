@@ -14,6 +14,7 @@
     "@replit/database": "^2.0.0",
     "ansi-colors": "^4.1.1",
     "canvas": "^2.6.1",
+    "cheerio": "^1.0.0-rc.5",
     "discord.js": "^12.5.1",
     "distube": "^2.8.8",
     "ffmpeg-static": "^4.2.7",
@@ -24,6 +25,7 @@
     "node-myanimelist": "^3.0.4",
     "opusscript": "0.0.7",
     "path": "^0.12.7",
+    "request-promise": "^4.2.6",
     "table": "^6.0.7",
     "ytdl-core": "^4.4.5",
     "ytsearcher": "^1.2.3"
