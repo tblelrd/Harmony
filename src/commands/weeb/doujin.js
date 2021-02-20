@@ -1,5 +1,6 @@
 const rp = require('request-promise');
 const $ = require('cheerio');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     commands: ['doujin', 'hentai'],
@@ -9,7 +10,12 @@ module.exports = {
     permision: ['ADMINISTRATOR'],
     callback: async (msg, args) => {
         const data = await findDoujin(args[0]);
-        msg.reply(data.img);
+
+        const e = new MessageEmbed()
+        .setTitle(data.title)
+        .setImage(data.img);
+
+        msg.channel.send(e);
     },
 };
 
@@ -18,10 +24,10 @@ const findDoujin = async (id) => {
 
     const html = await rp(url);
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
-    const tags = $('div > div > secion[id=tags]', html);
+    const title = $('div[id=info-block] > div[id=info] > h1', html).html();
     const data = {
         img: img,
-        tags: tags,
+        title: title,
     };
     return data;
 };
