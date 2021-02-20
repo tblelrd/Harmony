@@ -70,7 +70,6 @@ module.exports = (client, commandOptions) => {
         if (typeof permissions === 'string') {
             permissions = [permissions];
         }
-        console.log(permissions);
 
         validatePermissions(permissions);
     }
