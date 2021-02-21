@@ -9,6 +9,7 @@ module.exports = {
         const victim = msg.mentions.members.first();
         if(!victim) return msg.channel.send('Nope');
         if(!victim.kickable) return msg.reply('I couldnt kick them');
+        if(victim.highestRole.position >= msg.member.highestRole.position) return msg.reply('Can\'t do that');
         try {
             victim.send(`You got kicked from ${msg.guild.name}${reason ? ` for ${reason}` : ''}`);
             msg.channel.send(`${victim} has been kicked by ${msg.member}${reason ? ` for ${reason}` : ''}`);
