@@ -2,6 +2,7 @@ module.exports = {
     commands: ['disguise', 'disg', 'nick'],
     expectedArgs: '<userID> <text>',
     minArgs: 2,
+    permissions: ['CHANGE_NICKNAME'],
     callback: async (msg, args, text, bot) => {
         const guild = msg.guild;
         const user = await bot.users.fetch(args[0]);
