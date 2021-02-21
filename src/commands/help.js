@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix } = require('../../../config.json');
+const { prefix } = require('../../config.json');
 
 module.exports = {
     commands: ['help', 'h'],
@@ -10,6 +10,7 @@ module.exports = {
         const h = new Discord.MessageEmbed()
         .addField('Music', `\`${prefix}music\` \`help\``)
         .addField('Other', '`ping`')
+        .addField('Fun', '`say` `nick` `8ball`')
         .addField('Moderator', '`purge` `kick` `ban`')
         .addField('Anime', '`animesearch` `mangasearch` `doujin`')
 				.addField('Minecraft', '`hypixelonline` `namehistory` `kdr` `server`')
