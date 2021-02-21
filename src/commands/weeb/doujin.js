@@ -16,7 +16,8 @@ module.exports = {
             const e = new MessageEmbed()
             .setTitle(data.title)
             .setURL(data.url)
-            .setImage(data.img);
+            .setImage(data.img)
+            .addField('Tags', data.tags.map((tag) => `${tag}`).join(' ') || 'No tags', true);
 
             msg.channel.send(e);
         } catch {
@@ -33,10 +34,15 @@ const findDoujin = async (id) => {
     if(!html) return;
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
     const title = $('div[id=info-block] > div[id=info] > h1', html).html();
+    const tag = $('section > div:contains("Tags")', html).text().split(/[ ]+/).join(' ').split('\n').join(' ').split(/[ ]+/);
+    tag.shift();
+    tag.shift();
+    tag.pop();
     const data = {
         img: img,
         title: title,
         url: url,
+        tags: tag,
     };
     return data;
 };
