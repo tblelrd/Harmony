@@ -44,5 +44,5 @@ db.get('token').then(value => {
 	bot.login(value);
 });
 // bot.on('message', msg => {
-//     msg.mentions.members.first()
+//     msg.member.roles.highest.position
 // });
