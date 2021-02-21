@@ -5,6 +5,7 @@ module.exports = {
     expectedArgs: '<ip> [<port>]',
     minArgs: 1,
     maxArgs: 2,
+    dm: true,
     callback: async (msg, args) => {
         let ports = 25565;
         if (args[1]) ports = parseInt(args[1]);

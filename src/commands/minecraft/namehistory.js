@@ -1,12 +1,12 @@
 const MC = require('minecraft-api');
-const map = new Map();
 
 module.exports = {
     commands: ['namehistory', 'nh'],
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
-    callback: async (msg, args, text) => {
+    dm: true,
+    callback: async (msg, args) => {
         const cactus = await MC.nameForUuid('793884e374e142f3879613386f969e77');
         if(args[0] == cactus.toLowerCase()) return msg.channel.send('Nice try');
 
@@ -17,7 +17,7 @@ module.exports = {
           }
         });
 
-        msg.channel.send(`\`${args[0]}\`:\n -` + nameHistory.map((name, names) => `\`${name.name}\``).join('\n -'));
+        msg.channel.send(`\`${args[0]}\`:\n -` + nameHistory.map((name) => `\`${name.name}\``).join('\n -'));
 
     },
 };

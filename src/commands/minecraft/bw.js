@@ -12,6 +12,7 @@ module.exports = {
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
+    dm: true,
     callback: async (msg, args) => {
 
         const uuid = await MC.uuidForName(args[0]);

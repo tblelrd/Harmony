@@ -8,6 +8,7 @@ module.exports = {
     expectedArgs: '<username>',
     minArgs: 1,
     maxArgs: 1,
+    dm: true,
     callback: (msg, args) => {
 
         client.getPlayerByUsername(args[0], (err, player) => {
