@@ -10,6 +10,7 @@ module.exports = {
         const h = new Discord.MessageEmbed()
         .addField('Music', `\`${prefix}music\` \`help\``)
         .addField('Other', '`ping`')
+        .addField('Moderator', '`purge` `kick` `ban`')
         .addField('Anime', '`animesearch` `mangasearch` `doujin`')
 				.addField('Minecraft', '`hypixelonline` `namehistory` `kdr` `server`')
         .setFooter('Made by Jackack');

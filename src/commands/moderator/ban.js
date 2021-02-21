@@ -1,5 +1,5 @@
 module.exports = {
-    command: ['ban'],
+    commands: ['ban'],
     expectedArgs: ['<@member> [<reason?>]'],
     minArgs: 1,
     permissions: ['BAN_MEMBERS'],
