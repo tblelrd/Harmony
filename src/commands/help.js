@@ -9,7 +9,7 @@ module.exports = {
       if(msg.guild) {
         const h = new Discord.MessageEmbed()
         .addField('Music', `\`${prefix}music\` \`help\``)
-        .addField('Other', '`ping`')
+        .addField('Other', '`ping` `invite`')
         .addField('Fun', '`say` `nick` `8ball` `img`')
         .addField('Moderator', '`purge` `kick` `ban`')
         .addField('Anime', '`animesearch` `mangasearch` `doujin`')
