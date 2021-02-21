@@ -52,7 +52,7 @@ module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs,
-        permissionError = 'No thanks',
+        permissionError = 'Invalid permissions!',
         minArgs = 0,
         maxArgs = null,
         permissions = [],

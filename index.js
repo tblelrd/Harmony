@@ -43,3 +43,6 @@ const db = new Database();
 db.get('token').then(value => {
 	bot.login(value);
 });
+// bot.on('message', msg => {
+//     msg.mentions.members.first()
+// });
