@@ -17,7 +17,7 @@ module.exports = {
             .setTitle(data.title)
             .setURL(data.url)
             .setImage(data.img)
-            .addField('Tags', data.tags.map((tag) => `${tag}`).join(' ') || 'No tags', true);
+            .addField('Tags', data.tags.map((tag) => `\`${tag}\``).join(' ') || 'No tags', true);
 
             msg.channel.send(e);
         } catch {
