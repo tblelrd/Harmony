@@ -10,7 +10,7 @@ module.exports = {
         const h = new Discord.MessageEmbed()
         .addField('Music', `\`${prefix}music\` \`help\``)
         .addField('Other', '`ping` `invite`')
-        .addField('Fun', '`say` `nick` `8ball` `img`')
+        .addField('Fun', '`say` `nick` `8ball` `img` `roll`')
         .addField('Moderator', '`purge` `kick` `ban`')
         .addField('Anime', '`animesearch` `mangasearch` `doujin`')
 				.addField('Minecraft', '`hypixelonline` `namehistory` `kdr` `server`')
