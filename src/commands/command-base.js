@@ -51,7 +51,7 @@ const validatePermissions = (permissions) => {
 module.exports = (client, commandOptions) => {
     let {
         commands,
-        expectedArgs,
+        expectedArgs = '',
         permissionError = 'Invalid permissions!',
         minArgs = 0,
         maxArgs = null,
@@ -103,7 +103,7 @@ module.exports = (client, commandOptions) => {
                 if (arguments.length < minArgs || (
                         maxArgs !== null && arguments.length > maxArgs
                     )) {
-                    msg.reply(`Incorrect Syntax! Use \`${prefix}${alias} ${expectedArgs}\``);
+                    msg.reply(`Incorrect Syntax! Use \`${prefix}${alias}${expectedArgs ? ` ${expectedArgs}` : ''}\``);
                     return;
                 }
 
