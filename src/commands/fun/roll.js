@@ -17,7 +17,7 @@ module.exports = {
     callback: (msg) => {
         const random = Math.floor(Math.random() * 6);
 
-        const dice = new MessageAttachment(dices[random], `${random.toString()}.png`);
+        const dice = new MessageAttachment(dices[random - 1], `${random.toString()}.png`);
 
         const e = new MessageEmbed()
         .setDescription(`**You rolled a ${random}!**`)
