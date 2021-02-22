@@ -23,7 +23,7 @@ const responses = [
 
 module.exports = {
     commands: ['8ball'],
-    expectedArgs: '<quetion>',
+    expectedArgs: '<question>',
     minArgs: 1,
     callback: (msg) => {
         msg.channel.send(`\`${responses[Math.floor(Math.random() * responses.length)]}\``);
