@@ -20,10 +20,11 @@ module.exports = {
 
           const categories = [];
           for(const command of commands) {
-              if(command.name || command.aliases) {
-                  if(args[0] == command.name || command.aliases.includes(args[0])) {
+              if(command.commands) {
+								console.log('command.commands')
+                  if(args[0] == command.commands.includes(args[0])) {
                       e.setTitle('Command help');
-                      e.addField(`${command.name ? command.name : command.aliases[0]}`, `${command.desc ? command.desc : 'No desc set'}`);
+                      e.addField(`${command.aliases[0]}`, `${command.desc ? command.desc : 'No desc set'}`);
                       return msg.channel.send(e);
                   }
                   if(!command.category) command.category = 'Other';

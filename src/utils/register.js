@@ -20,7 +20,7 @@ const dmCommandBaseName = 'dm-command-base.js';
 const dmCommandBase = require('../commands/dm-command-base');
 
 const commands = [];
-const readCommands = async (bot, dir) => {
+const readCommands = (bot, dir) => {
     const files = fs.readdirSync(path.join(__dirname, '../', dir));
     for (const file of files) {
         const stat = fs.lstatSync(path.join(__dirname, '../', dir, file));
@@ -69,7 +69,7 @@ const readEvents = async (bot, dir) => {
 };
 
 const dmCommands = [];
-const readDmCommands = async (bot, dir) => {
+const readDmCommands = (bot, dir) => {
     const files = fs.readdirSync(path.join(__dirname, '../', dir));
     for (const file of files) {
         const stat = fs.lstatSync(path.join(__dirname, '../', dir, file));
@@ -95,12 +95,12 @@ module.exports = {
         readEvents(bot, 'events');
         console.log(table(eventStatus, tableConfig.options));
     },
-    registerCommands: async (bot) => {
+    registerCommands: (bot) => {
         readCommands(bot, 'commands');
         if(bot) console.log(table(commandStatus, tableConfig.options));
         return commands;
     },
-    registerDm: async (bot) => {
+    registerDm: (bot) => {
         readDmCommands(bot, 'commands');
         return dmCommands;
     },
