@@ -19,7 +19,9 @@ module.exports = {
             .setTitle(data.title)
             .setURL(data.url)
             .setImage(data.img)
-            .addField('Tags', data.tags.map((tag) => `\`${tag}\``).join(' ') || 'No tags', true);
+            .addField('Tags', data.tags.map((tag) => `\`${tag}\``).join(' ') || 'No tags', true)
+			.addField('Characters', data.chr.map((chr) => `\`${chr}\``).join(' ') || 'None specified', true)
+			.addField('Languages', data.lang.map((lang) => `\`${lang}\``).join(' ') || 'None specified', true);
 
             msg.channel.send(e);
         } catch {
@@ -36,16 +38,26 @@ const findDoujin = async (id) => {
     if(!html) return;
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
     const title = $('div[id=info-block] > div[id=info] > h1', html).html();
-    const tag = $('section > div:contains("Tags")', html).text().split(/[ ]+/).join(' ').split('\n').join(' ').split(/[ ]+/);
-    tag.shift();
-    tag.shift();
-    tag.pop();
+    const _tag = $('section > div:contains("Tags")', html).text().split(/[ \n]{2,}/);
+	const _chr = $('section > div:contains("Characters")', html).text().split(/[ \n]{2,}/);
+	const lang = $('section > div:contains("Languages")', html).text().split(/[ \n]{2,}/);
+	const chr = tagB(_chr);
+	const tag = tagB(_tag);
     const data = {
         img: img,
         title: title,
         url: url,
         tags: tag,
+		chr: chr,
+		lang: tagB(lang),
     };
     return data;
 };
+
+const tagB = (arr) => {
+	arr.shift();
+	arr.shift();
+	arr.pop();
+	return arr;
+}
 
