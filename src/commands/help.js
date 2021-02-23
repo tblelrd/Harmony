@@ -23,7 +23,20 @@ module.exports = {
         if (msg.guild) {
             commands.shift();
             e.setTitle('Help Categories')
-                .setAuthor(bot.user.username, bot.user.avatarURL());
+            .setAuthor(bot.user.username, bot.user.avatarURL());
+
+            for(const command of commands) {
+                let permissions = command.permissions;
+                if(typeof permissions === 'string') {
+                    permissions = [permissions];
+                }
+                for(const permission of permissions) {
+                    if(!msg.member.hasPermission(permission)) {
+                        const i = commands.indexOf(command);
+                        commands.splice(i, 1);
+                    }
+                }
+            }
 
             const categories = [];
             for (const command of commands) {
@@ -58,14 +71,14 @@ module.exports = {
         } else {
             dmCommands.shift();
             e.setTitle('Help Categories')
-                .setAuthor(bot.user.username, bot.user.avatarURL());
+            .setAuthor(bot.user.username, bot.user.avatarURL());
 
             const categories = [];
             for (const dmCommand of dmCommands) {
-                if (dmCommand.name || dmCommand.aliases) {
-                    if (args[0] == dmCommand.name || dmCommand.aliases.includes(args[0])) {
-                        e.setTitle('dmCommand help');
-                        e.addField(`${dmCommand.name ? dmCommand.name : dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
+                if (dmCommand.dmCommands) {
+                    if (args[0] == dmCommand.dmCommands.includes(args[0])) {
+                        e.setTitle('Command help');
+                        e.addField(`${dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
                         return msg.channel.send(e);
                     }
                     if (!dmCommand.category) dmCommand.category = 'Other';
