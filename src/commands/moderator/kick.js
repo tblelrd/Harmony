@@ -4,7 +4,7 @@ module.exports = {
     minArgs: 1,
     permissions: ['KICK_MEMBERS'],
     category: 'Moderator',
-    desc: 'Kicks a player',
+    desc: 'Kicks a user',
     callback: (msg, args) => {
         args.shift();
         const reason = args.join(' ');

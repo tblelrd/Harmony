@@ -4,7 +4,7 @@ module.exports = {
     minArgs: 1,
     permissions: ['BAN_MEMBERS'],
     category: 'Moderator',
-    desc: 'Bans a player',
+    desc: 'Bans a user',
     callback: (msg, args) => {
         args.shift();
         const reason = args.join(' ');

@@ -9,8 +9,12 @@ const {
     prefix,
 } = require('../../config.json');
 
-const commands = registerCommands();
+const Commands = registerCommands();
 const dmCommands = registerDm();
+Commands.shift();
+dmCommands.shift();
+
+let commands;
 
 module.exports = {
     commands: ['help', 'h'],
@@ -20,31 +24,38 @@ module.exports = {
     desc: 'Help screen',
     callback: (msg, args, text, bot) => {
         const e = new MessageEmbed();
+		commands = Commands;
         if (msg.guild) {
-            commands.shift();
             e.setTitle('Help Categories')
             .setAuthor(bot.user.username, bot.user.avatarURL());
 
             for(const command of commands) {
                 let permissions = command.permissions;
-                if(typeof permissions === 'string') {
-                    permissions = [permissions];
-                }
-                for(const permission of permissions) {
-                    if(!msg.member.hasPermission(permission)) {
-                        const i = commands.indexOf(command);
-                        commands.splice(i, 1);
-                    }
-                }
+				const i = commands.indexOf(command);
+				commands[i].allowed = true;
+				if(permissions) {
+					if(typeof permissions === 'string') {
+						permissions = [permissions];
+					}
+					for(const permission of permissions) {
+						if(!msg.member.hasPermission(permission)) {
+							commands[i].allowed = false;
+						}
+					}
+				}
             }
 
             const categories = [];
             for (const command of commands) {
                 if (command.commands) {
-                    if (args[0] == command.commands.includes(args[0])) {
-                        e.setTitle('Command help');
-                        e.addField(`${command.aliases[0]}`, `${command.desc ? command.desc : 'No desc set'}`);
-                        return msg.channel.send(e);
+                    if (args[0]) {
+						for(const alias of command.commands) {
+							if(args[0] == alias) {
+								e.setTitle('Command help');
+								e.addField(`${alias}`, `${command.desc ? command.desc : 'No desc set'}`);
+								return msg.channel.send(e);
+							}
+						}
                     }
                     if (!command.category) command.category = 'Other';
                     if (!categories.includes(command.category)) {
@@ -62,14 +73,15 @@ module.exports = {
                         aliases = [aliases];
                     }
                     if(command.category == category) {
-                        result.push(aliases[0]);
+						if(command.allowed) {
+							result.push(aliases[0]);
+						}
                     }
                 }
                 res = result.map((cmd) => `\`${cmd}\``).join('\n');
-                e.addField(category, res ? res : 'res', true);
+				if(res) e.addField(category, res, true);
             }
         } else {
-            dmCommands.shift();
             e.setTitle('Help Categories')
             .setAuthor(bot.user.username, bot.user.avatarURL());
 
