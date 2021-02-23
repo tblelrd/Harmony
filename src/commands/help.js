@@ -5,6 +5,8 @@ module.exports = {
     commands: ['help', 'h'],
     maxArgs: 0,
     dm: true,
+    category: 'Utility',
+    desc: 'Help screen',
     callback: (msg) => {
       if(msg.guild) {
         const h = new Discord.MessageEmbed()

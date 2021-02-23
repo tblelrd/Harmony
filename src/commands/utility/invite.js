@@ -1,10 +1,12 @@
 const { MessageEmbed } = require('discord.js');
-const { prefix } = require('../../../config.json'); 
+const { prefix } = require('../../../config.json');
 
 module.exports = {
     commands: ['invite'],
     maxArgs: 0,
     dm: true,
+    category: 'Utility',
+    desc: 'Sends an embed of an invite link so I can join your server!',
     callback: (msg, args, text, bot) => {
         try {
             const e = new MessageEmbed()

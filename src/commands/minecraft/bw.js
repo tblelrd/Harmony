@@ -13,6 +13,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     dm: true,
+    category: 'Minecraft',
+    desc: 'Hypixel bedwars stats in an image',
     callback: async (msg, args) => {
 
         const uuid = await MC.uuidForName(args[0]);

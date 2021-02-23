@@ -8,6 +8,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     permissions: ['ADMINISTRATOR'],
+    category: 'Weeb',
+    desc: 'Searches a doujin by its id (works in dms if u know what i mean)',
     callback: async (msg, args) => {
         try {
             const data = await findDoujin(args[0]);

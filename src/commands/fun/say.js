@@ -2,6 +2,8 @@ module.exports = {
     commands: ['say', 'repeat'],
     expectedArgs: '<text>',
     minArgs: 1,
+    category: 'Fun',
+    desc: 'Repeats what you say',
     callback: async (msg, args, text) => {
         const name = msg.member.nickname;
         const avatar = msg.author.avatarURL({ dynamic: true });

@@ -14,6 +14,8 @@ for(let i = 1; i <= 6; i++) {
 module.exports = {
     commands: ['roll'],
     maxArgs: 0,
+    category: 'Fun',
+    desc: 'Rolls the dice',
     callback: (msg) => {
         const random = Math.floor(Math.random() * 6);
 

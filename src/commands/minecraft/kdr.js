@@ -10,6 +10,8 @@ module.exports = {
     minArgs: 2,
     maxArgs: 3,
     dm: true,
+    category: 'Minecraft',
+    desc: 'Hypixel kill death ratio in 3 game types',
     callback: (msg, args, text) => {
 
         client.getPlayerByUsername(args[0], (err, player) => {

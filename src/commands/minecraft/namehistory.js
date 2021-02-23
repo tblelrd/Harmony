@@ -6,6 +6,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     dm: true,
+    category: 'Minecraft',
+    desc: 'Find the minecraft name history of a name',
     callback: async (msg, args) => {
         const cactus = await MC.nameForUuid('793884e374e142f3879613386f969e77');
         if(args[0] == cactus.toLowerCase()) return msg.channel.send('Nice try');

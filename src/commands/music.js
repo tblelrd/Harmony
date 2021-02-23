@@ -119,7 +119,19 @@ module.exports = {
 };
 
 //
-function fmtMSS(s) {return(s - (s %= 60)) / 60 + (s > 9 ? ':' : ':0') + s;}
+const STMSS = (s) => {
+    const min = s % 60;
+    let left = ((s - min) / 60);
+    if(left >= 60) left = MTHMM(left);
+    const right = (min > 9 ? min == 0 ? ':0' : ':' : ':0') + min;
+    return(left + right);
+};
+const MTHMM = (m) => {
+    const hour = m % 60;
+    const left = ((m - hour) / 60);
+    const right = (hour > 9 ? hour == 0 ? ':0' : ':' : ':0') + hour;
+    return(left + right);
+};
 async function execute(msg, serverQueue, args) {
     args.shift();
     const search = args.join(' ');
@@ -132,7 +144,7 @@ async function execute(msg, serverQueue, args) {
     const song = {
         title: songInfo.videoDetails.title,
         url: songInfo.videoDetails.video_url,
-        vLength: songInfo.videoDetails.lengthSeconds != 0 ? fmtMSS(songInfo.videoDetails.lengthSeconds) : 'LIVE',
+        vLength: songInfo.videoDetails.lengthSeconds != 0 ? STMSS(songInfo.videoDetails.lengthSeconds) : 'LIVE',
     };
 
     if(!serverQueue) {

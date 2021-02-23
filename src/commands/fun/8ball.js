@@ -25,6 +25,8 @@ module.exports = {
     commands: ['8ball'],
     expectedArgs: '<question>',
     minArgs: 1,
+    category: 'Fun',
+    desc: 'Ask it a question and it will repond with the widom of gods',
     callback: (msg) => {
         msg.channel.send(`\`${responses[Math.floor(Math.random() * responses.length)]}\``);
     },

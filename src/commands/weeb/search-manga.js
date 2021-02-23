@@ -7,6 +7,8 @@ module.exports = {
     expectedArgs: '<name>',
     minArgs: 1,
     dm: true,
+    category: 'Weeb',
+    desc: 'Searches a manga in My Anime List',
     callback: async (msg, args, text) => {
         try {
             const search = await searchManga(text);

@@ -3,6 +3,8 @@ module.exports = {
     expectedArgs: ['<@member> [<reason?>]'],
     minArgs: 1,
     permissions: ['BAN_MEMBERS'],
+    category: 'Moderator',
+    desc: 'Bans a player',
     callback: (msg, args) => {
         args.shift();
         const reason = args.join(' ');

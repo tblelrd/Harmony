@@ -6,6 +6,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 2,
     dm: true,
+    category: 'Minecraft',
+    desc: 'Returns info about a server',
     callback: async (msg, args) => {
         let ports = 25565;
         if (args[1]) ports = parseInt(args[1]);

@@ -3,6 +3,8 @@ module.exports = {
     expectedArgs: '<userID> <text>',
     minArgs: 2,
     permissions: ['CHANGE_NICKNAME'],
+    category: 'Fun',
+    desc: 'Nicks yourself as someone else, with the bot tag tho',
     callback: async (msg, args, text, bot) => {
         const guild = msg.guild;
         const user = await bot.users.fetch(args[0]);

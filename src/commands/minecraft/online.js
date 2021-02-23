@@ -9,6 +9,8 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     dm: true,
+    category: 'Minecraft',
+    desc: 'Checks if a player is online on hypixel',
     callback: (msg, args) => {
 
         client.getPlayerByUsername(args[0], (err, player) => {
