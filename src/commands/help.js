@@ -75,8 +75,8 @@ module.exports = {
 
             const categories = [];
             for (const dmCommand of dmCommands) {
-                if (dmCommand.dmCommands) {
-                    if (args[0] == dmCommand.dmCommands.includes(args[0])) {
+                if (dmCommand.commands) {
+                    if (args[0] == dmCommand.commands.includes(args[0])) {
                         e.setTitle('Command help');
                         e.addField(`${dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
                         return msg.channel.send(e);
@@ -92,7 +92,7 @@ module.exports = {
                 const result = [];
                 let res = '';
                 for(const dmCommand of dmCommands) {
-                    let aliases = dmCommand.dmCommands;
+                    let aliases = dmCommand.commands;
                     if(typeof aliases === 'string') {
                         aliases = [aliases];
                     }
