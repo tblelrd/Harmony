@@ -44,8 +44,12 @@ module.exports = {
                 const result = [];
                 let res = '';
                 for(const command of commands) {
+                    let aliases = command.commands;
+                    if(typeof aliases === 'string') {
+                        aliases = [aliases];
+                    }
                     if(command.category == category) {
-                        result.push(command.name);
+                        result.push(aliases[0]);
                     }
                 }
                 res = result.map((cmd) => `\`${cmd}\``).join('\n');
