@@ -83,8 +83,9 @@ const readDmCommands = (bot, dir) => {
                 } else {
                     dmCommandBase(bot, options);
                 }
-            } else {
-                dmCommands.push(options);
+            } else if(options.dm) {
+                    dmCommands.push(options);
+                }
             }
         }
     }
