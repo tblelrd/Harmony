@@ -14,7 +14,7 @@ const dmCommands = registerDm();
 
 module.exports = {
     commands: ['help', 'h'],
-    maxArgs: 0,
+    maxArgs: 1,
     dm: true,
     category: 'Utility',
     desc: 'Help screen',
@@ -54,7 +54,6 @@ module.exports = {
                 }
                 res = result.map((cmd) => `\`${cmd}\``).join('\n');
                 e.addField(category, res ? res : 'res', true);
-
             }
         } else {
             dmCommands.shift();
@@ -79,14 +78,17 @@ module.exports = {
             for(const category of categories) {
                 const result = [];
                 let res = '';
-                for(const command of commands) {
-                    if(command.category == category) {
-                        result.push(command.name);
+                for(const dmCommand of dmCommands) {
+                    let aliases = dmCommand.dmCommands;
+                    if(typeof aliases === 'string') {
+                        aliases = [aliases];
+                    }
+                    if(dmCommand.category == category) {
+                        result.push(aliases[0]);
                     }
                 }
                 res = result.map((cmd) => `\`${cmd}\``).join('\n');
                 e.addField(category, res ? res : 'res', true);
-
             }
         }
         msg.channel.send(e);
