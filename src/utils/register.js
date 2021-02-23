@@ -19,6 +19,7 @@ const eventBase = require('../events/event-base');
 const dmCommandBaseName = 'dm-command-base.js';
 const dmCommandBase = require('../commands/dm-command-base');
 
+const commands = [];
 const readCommands = async (bot, dir) => {
     const files = fs.readdirSync(path.join(__dirname, '../', dir));
     for (const file of files) {
@@ -27,15 +28,19 @@ const readCommands = async (bot, dir) => {
             readCommands(bot, path.join(dir, file));
         } else if (file.endsWith('.js') && file !== commandBaseName && file !== dmCommandBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
-            if (!options.commands || !options.callback) {
-                commandStatus.push(
-                    [`${c.cyan(file)}`, `${c.bgRed('Failed')}`],
-                );
+            if(bot) {
+                if (!options.commands || !options.callback) {
+                    commandStatus.push(
+                        [`${c.cyan(file)}`, `${c.bgRed('Failed')}`],
+                    );
+                } else {
+                    commandBase(bot, options);
+                    commandStatus.push(
+                        [`${c.cyan(file)}`, `${c.bgGreen('Loaded')}`],
+                    );
+                }
             } else {
-                commandBase(bot, options);
-                commandStatus.push(
-                    [`${c.cyan(file)}`, `${c.bgGreen('Loaded')}`],
-                );
+                commands.push(options);
             }
         }
     }
@@ -63,6 +68,7 @@ const readEvents = async (bot, dir) => {
     }
 };
 
+const dmCommands = [];
 const readDmCommands = async (bot, dir) => {
     const files = fs.readdirSync(path.join(__dirname, '../', dir));
     for (const file of files) {
@@ -71,25 +77,31 @@ const readDmCommands = async (bot, dir) => {
             readDmCommands(bot, path.join(dir, file));
         } else if (file.endsWith('.js') && file !== dmCommandBaseName && file !== commandBaseName) {
             const options = require(path.join(__dirname, '../', dir, file));
-            if (!options.commands || !options.dm || !options.callback) {
-                //
+            if(bot) {
+                if (!options.commands || !options.dm || !options.callback) {
+                    //
+                } else {
+                    dmCommandBase(bot, options);
+                }
             } else {
-                dmCommandBase(bot, options);
+                dmCommands.push(options);
             }
         }
     }
 };
 
 module.exports = {
-    registerEvents: async (bot, dir) => {
-        readEvents(bot, dir);
+    registerEvents: async (bot) => {
+        readEvents(bot, 'events');
         console.log(table(eventStatus, tableConfig.options));
     },
-    registerCommands: async (bot, dir) => {
-        readCommands(bot, dir);
-        console.log(table(commandStatus, tableConfig.options));
+    registerCommands: async (bot) => {
+        readCommands(bot, 'commands');
+        if(bot) console.log(table(commandStatus, tableConfig.options));
+        return commands;
     },
-    registerDm: async (bot, dir) => {
-        readDmCommands(bot, dir);
+    registerDm: async (bot) => {
+        readDmCommands(bot, 'commands');
+        return dmCommands;
     },
 };
