@@ -6,6 +6,8 @@ const {
     prefix,
 } = require('../../config.json');
 
+const profileModel = require('../models/profileSchem');
+
 const validatePermissions = (permissions) => {
     // eslint-disable-next-line no-shadow
     const validatePermissions = [
@@ -48,6 +50,8 @@ const validatePermissions = (permissions) => {
     }
 };
 
+let recentlyrun = [];
+
 module.exports = (client, commandOptions) => {
     let {
         commands,
@@ -55,6 +59,7 @@ module.exports = (client, commandOptions) => {
         permissionError = 'Invalid permissions!',
         minArgs = 0,
         maxArgs = null,
+        cooldown = -1,
         permissions = [],
         // requiredRoles = [],
         callback,
@@ -74,7 +79,7 @@ module.exports = (client, commandOptions) => {
         validatePermissions(permissions);
     }
     // Listen for messages
-    client.on('message', msg => {
+    client.on('message', async msg => {
         if(msg.author.bot || msg.channel.type === 'dm') return;
         const {
             member,
@@ -93,6 +98,19 @@ module.exports = (client, commandOptions) => {
                     }
                 }
 
+                let cooldownObj = {
+                    gulidID: guild.id,
+                    memberID: member.id,
+                    command: commands[0],
+                    time: Date.now(),
+                };
+
+                for(const run of recentlyrun) {
+                    if(cooldown > 0 && run.guildID == cooldownObj.guildID && run.memberID == cooldownObj.memberID && run.command == cooldownObj.command) {
+                        return msg.channel.send(`This command is on \`cooldown\` for another ${Math.floor(((run.time - Date.now()) / 1000) + cooldown)}s, please wait`);
+                    }
+                }
+
                 // Split any number of spaces
                 const arguments = content.split(/[ ]+/);
 
@@ -106,9 +124,41 @@ module.exports = (client, commandOptions) => {
                     msg.reply(`Incorrect Syntax! Use \`${prefix}${alias}${expectedArgs ? ` ${expectedArgs}` : ''}\``);
                     return;
                 }
+                let profileData;
+                try {
+                    profileData = await profileModel.findOne({ userID: msg.author.id });
+                    if(!profileData) {
+                        const profile = await profileModel.create({
+                            userID: msg.author.id,
+                            serverID: msg.guild.id,
+                            coins: 1000,
+                            bank: 0,
+                        });
+                        profile.save()
+                        .then(res => {
+                            console.log(`${msg.author.username} has been added to the economy`);
+                        });
+                    }
+                } catch(err) {
+                    console.log(err);
+                }
+
+                if(cooldown > 0) {
+                    recentlyrun.push(cooldownObj);
+
+                    setTimeout(() => {
+                        recentlyrun = recentlyrun.filter((str) => {
+                            return (
+                                str.guildID !== cooldownObj.guildID
+                                && str.memberID !== cooldownObj.memberID
+                                && str.command !== cooldownObj.command
+                            );
+                        });
+                    }, 1000 * cooldown);
+                }
 
                 // Handle the custom command code
-                callback(msg, arguments, arguments.join(' '), client);
+                callback(msg, arguments, arguments.join(' '), client, profileData);
 
                 return;
             }
