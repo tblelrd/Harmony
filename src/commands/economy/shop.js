@@ -24,6 +24,7 @@ module.exports = {
             // });
             // shop.save()
             // .then(res => console.log(res));
+            return msg.channel.send(e);
         }
 
         if(!args[0]) {
