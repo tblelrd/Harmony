@@ -27,7 +27,7 @@ bot.once('ready', async () =>{
     })
     .catch(console.error);
 
-    mongoose.connect('mongodb+srv://televox:getjacked@jackack-bot.r14ha.mongodb.net/harmony', { useNewUrlParser: true, useUnifiedTopology: true });
+    mongoose.connect('mongodb+srv://televox:getjacked@jackack-bot.r14ha.mongodb.net/harmony', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
     registery.registerCommands(bot);
     registery.registerEvents(bot);
     registery.registerDm(bot);
