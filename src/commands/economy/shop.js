@@ -17,7 +17,7 @@ module.exports = {
         const shop = await shopModel.findOne({ guildID: msg.guild.id });
         if(!shop) {
             e.setAuthor(msg.guild.name, msg.guild.iconURL())
-            .setDescription(`Your server currently doesn have a shop\nSet up your shop by \`${prefix}setshop <shopName> <itemName> <price>\``);
+            .setDescription(`Your server currently doesn have a shop\nSet up your shop by \`${prefix}setshop <shopName> <price> <itemName>\``);
             // shop = new shopModel({
             //     guildID: msg.guild.id,
             //     items: [ pinkPhallic ],
