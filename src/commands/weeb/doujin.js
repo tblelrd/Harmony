@@ -1,3 +1,4 @@
+/* eslint-disable no-inline-comments */
 const rp = require('request-promise');
 const $ = require('cheerio');
 const { MessageEmbed } = require('discord.js');
@@ -41,23 +42,23 @@ const findDoujin = async (id) => {
     const _tag = $('section > div:contains("Tags")', html).text().split(/[ \n]{2,}/);
 	const _chr = $('section > div:contains("Characters")', html).text().split(/[ \n]{2,}/);
 	const lang = $('section > div:contains("Languages")', html).text().split(/[ \n]{2,}/);
-	const chr = tagB(_chr);
-	const tag = tagB(_tag);
+	const chr = shiftnpop(_chr); // idk why but first 2 elements are nothing and the last one is also nothing
+	const tag = shiftnpop(_tag);
     const data = {
         img: img,
         title: title,
         url: url,
         tags: tag,
 		chr: chr,
-		lang: tagB(lang),
+		lang: shiftnpop(lang),
     };
     return data;
 };
 
-const tagB = (arr) => {
+const shiftnpop = (arr) => {
 	arr.shift();
 	arr.shift();
 	arr.pop();
 	return arr;
-}
+};
 

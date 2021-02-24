@@ -1,4 +1,4 @@
-const { MessageAttachment } = require('discord.js');
+const { MessageAttachment, MessageEmbed } = require('discord.js');
 const MC = require('minecraft-api');
 const hypixel = require('hypixel');
 const client = new hypixel({
@@ -16,6 +16,9 @@ module.exports = {
     category: 'Minecraft',
     desc: 'Hypixel bedwars stats in an image',
     callback: async (msg, args) => {
+
+        const e = new MessageEmbed()
+        .setAuthor(msg.author.username, msg.author.avatarURL());
 
         const uuid = await MC.uuidForName(args[0]);
         if(!uuid) return console.log('Errorrrr');
@@ -42,14 +45,20 @@ module.exports = {
                 bedwars(stats)
                 .then(Buffer => {
                     const attachment = new MessageAttachment(Buffer, `${name}-Bedwars-Stats.png`);
-                    msg.channel.send(`Here is \`${name}'s\` bedwars stats`, attachment);
+
+                    e.attachFiles(attachment)
+                    .setDescription(`${name}'s bedwars stats`)
+                    .setImage(`attachment://${name}-Bedwars-Stats.png`);
+                    msg.channel.send(e);
                 })
                 .catch(err => {
                     console.log(err);
                 });
             } catch(err) {
                 console.log(err);
-                msg.reply('There was error :(');
+                e.setDescription('There was an error :(');
+
+                msg.channel.send(e);
             }
         });
     },

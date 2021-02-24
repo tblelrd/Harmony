@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 const responses = [
     'It is certain.',
     'It is decidedly so.',
@@ -28,6 +30,10 @@ module.exports = {
     category: 'Fun',
     desc: 'Ask it a question and it will repond with the widom of gods',
     callback: (msg) => {
-        msg.channel.send(`\`${responses[Math.floor(Math.random() * responses.length)]}\``);
+        const e = new MessageEmbed()
+        .setAuthor(msg.author.username, msg.author.avatarURL())
+        .setDescription(`\`${responses[Math.floor(Math.random() * responses.length)]}\``);
+
+        msg.channel.send(e);
     },
 };

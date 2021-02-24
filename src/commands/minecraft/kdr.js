@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const { MessageEmbed } = require('discord.js');
 const hypixel = require('hypixel');
 const client = new hypixel({
     key: 'bf5d8092-3665-4e93-9b6b-aa83b499e27b',
@@ -13,6 +14,9 @@ module.exports = {
     category: 'Minecraft',
     desc: 'Hypixel kill death ratio in 3 game types',
     callback: (msg, args, text) => {
+
+        const e = new MessageEmbed()
+        .setAuthor(msg.author.username, msg.author.avatarURL());
 
         client.getPlayerByUsername(args[0], (err, player) => {
             if(err) throw err;
@@ -29,8 +33,9 @@ module.exports = {
                     const fdeaths = player.stats.Bedwars.final_deaths_bedwars;
 
 
-                    if (args[2]) return msg.channel.send(`${player.displayname}'s fkdr is: \`${Math.round(fkills / fdeaths * 100) / 100}\``);
-                    msg.channel.send(`${player.displayname}'s kdr is: \`${Math.round(bkills / bdeaths * 100) / 100}\``);
+                    e.setDescription(`${player.displayname}'s kdr is: \`${Math.round(bkills / bdeaths * 100) / 100}\``);
+                    if (args[2]) e.setDescription(`${player.displayname}'s fkdr is: \`${Math.round(fkills / fdeaths * 100) / 100}\``);
+                    msg.channel.send(e);
 
                 break;
 
@@ -40,7 +45,8 @@ module.exports = {
                     const skills = player.stats.SkyWars.kills;
                     const sdeaths = player.stats.SkyWars.deaths;
 
-                    msg.channel.send(`${player.displayname}'s kdr is: \`${Math.round(skills / sdeaths * 100) / 100}\``);
+                    e.setDescription(`${player.displayname}'s kdr is: \`${Math.round(skills / sdeaths * 100) / 100}\``);
+                    msg.channel.send(e);
                 break;
 
                 case 'duels':
@@ -48,7 +54,8 @@ module.exports = {
                     const dkills = player.stats.Duels.kills;
                     const ddeath = player.stats.Duels.deaths;
 
-                    msg.channel.send(`${player.displayname}'s kdr is: \`${Math.round(dkills / ddeath * 100) / 100}\``);
+                    e.setDescription(`${player.displayname}'s kdr is: \`${Math.round(dkills / ddeath * 100) / 100}\``);
+                    msg.channel.send(e);
                 break;
             }
         });
