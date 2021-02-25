@@ -5,6 +5,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     commands: ['inventory', 'inv'],
     category: 'Economy',
+    desc: 'Shows what items you have in your inventory',
     callback: async (msg, args, text, bot, profile) => {
         const e = new MessageEmbed()
         .setAuthor(msg.author.username, msg.author.avatarURL());

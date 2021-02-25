@@ -8,6 +8,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: 1,
     category: 'Economy',
+    desc: 'Withdraw the money from the bank to your wallet',
     callback: async (msg, args, text, bot, profile) => {
 
         const amount = parseInt(args[0] == 'all' ? profile.bank : args[0]);

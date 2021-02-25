@@ -7,6 +7,7 @@ module.exports = {
     maxArgs: 0,
     cooldown: 20,
     category: 'Economy',
+    desc: 'Begs strangers for money, usually between 1 - 500, beggers cant be choosers',
     callback: async (msg) => {
         const random = Math.floor(Math.random() * 500 - 1) + 1;
         await profileModel.findOneAndUpdate({ userID: msg.author.id }, {

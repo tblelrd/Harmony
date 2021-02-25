@@ -7,6 +7,7 @@ module.exports = {
     minArgs: 3,
     cooldown: 60,
     category: 'Economy',
+    desc: 'Sets your guild\'s shop, and the first item',
     permissions: ['ADMINISTRATOR'],
     callback: async (msg, args, text, bot, profile) => {
         const shopName = args[0];

@@ -12,6 +12,7 @@ module.exports = {
     commands: ['shop', 'buy'],
     cooldown: 5,
     category: 'Economy',
+    desc: 'without params, Shows the items in the shop, with params, itll buy the item (also it might need to be lowercase idk)',
     callback: async (msg, args, text, bot, profile) => {
         const e = new MessageEmbed();
         const shop = await shopModel.findOne({ guildID: msg.guild.id });
@@ -37,7 +38,7 @@ module.exports = {
             msg.channel.send(e);
         } else {
             for(const item of shop.items) {
-                if(item.name.toLowerCase() == text) {
+                if(item.name.toLowerCase() == text.toLowerCase()) {
                     if(profile.coins < item.price) return msg.reply('You dont have enough money');
 
                     await profileModel.findOneAndUpdate({ userID: msg.author.id }, {

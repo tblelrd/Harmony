@@ -7,6 +7,7 @@ module.exports = {
     minArgs: 3,
     cooldown: 60,
     category: 'Economy',
+    desc: 'Adds an item to your guild shop (This will be removed in the near future so be sure to abuse it)',
     permissions: ['ADMINISTRATOR'],
     callback: async (msg, args, text, bot, profile) => {
         const price = parseInt(args[0]);

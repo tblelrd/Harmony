@@ -4,6 +4,7 @@ module.exports = {
     commands: ['balance', 'bal'],
     maxArgs: 0,
     category: 'Economy',
+    desc: 'Checks your economy balance',
     callback: (msg, args, test, bot, profile) => {
         const e = new MessageEmbed()
         .setAuthor(msg.author.username, msg.author.avatarURL())
