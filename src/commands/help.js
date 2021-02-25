@@ -137,7 +137,7 @@ module.exports = {
 						if(alias == args[0]) {
 							aliasCheck = true;
 							e.setTitle(`Command: ${alias}`)
-							.setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
+							.setDescription(`Correct Syntax: \`${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\`\n` +
 							`${command.desc ? command.desc : 'No description set, sorry'}`);
 						}
 					}
@@ -160,7 +160,7 @@ module.exports = {
                         if(alias == args[0]) {
                             aliasCheck = true;
                             e.setTitle(`Command: ${alias}`)
-                            .setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
+                            .setDescription(`Correct Syntax: \`${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\`\n` +
                             `${command.desc ? command.desc : 'No description set, sorry'}`);
                         }
                     }
