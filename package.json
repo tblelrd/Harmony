@@ -29,6 +29,7 @@
     "path": "^0.12.7",
     "request-promise": "^4.2.6",
     "table": "^6.0.7",
+    "teemojs": "^1.7.0",
     "ytdl-core": "^4.5.0",
     "ytsearcher": "^1.2.3"
   }
