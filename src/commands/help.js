@@ -123,14 +123,16 @@ module.exports = {
             let aliasCheck = false;
 
             for(const command of Commands) {
-                for(const alias of command.commands) {
-                    if(alias == args[0]) {
-                        aliasCheck = true;
-                        e.setTitle(`Command: ${alias}`)
-                        .setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
-                        `${command.desc ? command.desc : 'No description set, sorry'}`);
-                    }
-                }
+				if(command.commands) {
+					for(const alias of command.commands) {
+						if(alias == args[0]) {
+							aliasCheck = true;
+							e.setTitle(`Command: ${alias}`)
+							.setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
+							`${command.desc ? command.desc : 'No description set, sorry'}`);
+						}
+					}
+				}
             }
 
             if(!aliasCheck) e.setTitle(`Command name "${args[0]}" not found`);
