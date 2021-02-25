@@ -3,10 +3,10 @@ const shopModel = require('../../models/guildShop');
 const profileModel = require('../../models/profileSchem');
 const { prefix } = require('../../../config.json');
 
-const pinkPhallic = {
-    name: 'Pink Phallic Object',
-    price: 10,
-};
+// const pinkPhallic = {
+//     name: 'Pink Phallic Object',
+//     price: 10,
+// };
 
 module.exports = {
     commands: ['shop', 'buy'],
