@@ -50,15 +50,19 @@ module.exports = {
                 const categories = [];
                 for (const command of commands) {
                     if (command.commands) {
-                        if (args[0]) {
-                            for (const alias of command.commands) {
-                                if (args[0] == alias) {
-                                    e.setTitle('Command help');
-                                    e.addField(`${alias}`, `${command.desc ? command.desc : 'No desc set'}`);
-                                    return msg.channel.send(e);
-                                }
-                            }
-                        }
+                        // let aliases = command.commands;
+                        // if(typeof aliases == 'string') {
+                        //     aliases = [aliases];
+                        // }
+                        // if (args[0]) {
+                        //     for (const alias of aliases) {
+                        //         isf (args[0] == alias) {
+                        //             e.setTitle('Command help');
+                        //             e.addField(`${alias}`, `${command.desc ? command.desc : 'No desc set'}`);
+                        //             return msg.channel.send(e);
+                        //         }
+                        //     }
+                        // }
                         if (!command.category) command.category = 'Other';
                         if (!categories.includes(command.category)) {
                             categories.push(command.category);
@@ -90,11 +94,11 @@ module.exports = {
                 const categories = [];
                 for (const dmCommand of dmCommands) {
                     if (dmCommand.commands) {
-                        if (args[0] == dmCommand.commands.includes(args[0])) {
-                            e.setTitle('Command help');
-                            e.addField(`${dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
-                            return msg.channel.send(e);
-                        }
+                        // if (args[0] == dmCommand.commands.includes(args[0])) {
+                        //     e.setTitle('Command help');
+                        //     e.addField(`${dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
+                        //     return msg.channel.send(e);
+                        // }
                         if (!dmCommand.category) dmCommand.category = 'Other';
                         if (!categories.includes(dmCommand.category)) {
                             categories.push(dmCommand.category);
@@ -124,7 +128,12 @@ module.exports = {
 
             for(const command of Commands) {
 				if(command.commands) {
-					for(const alias of command.commands) {
+                    let aliases = command.commands;
+                    if(typeof aliases == 'string') {
+                        aliases = [aliases];
+                    }
+
+					for(const alias of aliases) {
 						if(alias == args[0]) {
 							aliasCheck = true;
 							e.setTitle(`Command: ${alias}`)
@@ -142,12 +151,18 @@ module.exports = {
             let aliasCheck = false;
 
             for(const command of dmCommands) {
-                for(const alias of command.commands) {
-                    if(alias == args[0]) {
-                        aliasCheck = true;
-                        e.setTitle(`Command: ${alias}`)
-                        .setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
-                        `${command.desc ? command.desc : 'No description set, sorry'}`);
+                if(command.commands) {
+                    let aliases = command.commands;
+                    if(typeof aliases == 'string') {
+                        aliases = [aliases];
+                    }
+                    for(const alias of aliases) {
+                        if(alias == args[0]) {
+                            aliasCheck = true;
+                            e.setTitle(`Command: ${alias}`)
+                            .setDescription(`Correct Syntax: ${prefix}${alias}${command.expectedArgs ? ` ${command.expectedArgs}` : ''}\n` +
+                            `${command.desc ? command.desc : 'No description set, sorry'}`);
+                        }
                     }
                 }
             }
