@@ -25,8 +25,6 @@ module.exports = {
                 items.push(item);
                 itemNames.push(item.name);
             }
-
-            console.log(itemNames);
         }
         for(const item of items) {
             e.addField(item.name, `${[item.price]} coins\n${item.amount}`, true);
