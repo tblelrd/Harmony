@@ -122,7 +122,7 @@ module.exports = {
             e.setAuthor(bot.user.username, bot.user.avatarURL());
             let aliasCheck = false;
 
-            for(const command of commands) {
+            for(const command of Commands) {
                 for(const alias of command.commands) {
                     if(alias == args[0]) {
                         aliasCheck = true;
