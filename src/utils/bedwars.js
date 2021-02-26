@@ -32,7 +32,7 @@ module.exports = async (stats) => {
     const bblr = toTDP(bbreak, blosts);
     const wlr = toTDP(wins, losses);
 
-    const background = await loadImage(`https://visage.surgeplay.com/bust/512/${uuid}.png`);
+    const background = await loadImage(`https://visage.surgeplay.com/full/512/${uuid}.png`);
     const canvas = createCanvas(background.width * 2, background.height);
     const ctx = canvas.getContext('2d');
 
