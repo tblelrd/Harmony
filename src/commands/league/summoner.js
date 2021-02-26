@@ -41,6 +41,7 @@ module.exports = {
         if(!validateRegions(region)) {
             e.setDescription(`${region} is not a valid region`);
             msg.channel.send(e);
+            return;
         }
         args.shift();
         const name = args.join(' ');
