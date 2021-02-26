@@ -32,6 +32,7 @@ module.exports = {
     expectedArgs: '<region> <username>',
     minArgs: 2,
     category: 'League',
+    dm: true,
     callback: async (msg, args) => {
         const region = args[0].toLowerCase();
         const e = new MessageEmbed()
