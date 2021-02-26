@@ -53,6 +53,9 @@ module.exports = {
                 })
                 .catch(err => {
                     console.log(err);
+                    e.setDescription('There was an error :(');
+
+                    msg.channel.send(e);
                 });
             } catch(err) {
                 console.log(err);
