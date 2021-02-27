@@ -49,9 +49,9 @@ module.exports = {
         const summoner = await api.get(region, 'summoner.getBySummonerName', name);
 		if(summoner) {
 			if(invalid.includes(summoner.id)) {
-            	e.setDescription(`Couldn't find \`${name}\`\n Look at the spelling and try again${invalid.includes(summoner.id) && summoner.id ? '\n You have already looked this summoner up, \nplease stop as it would ban my api key if u spam it' : ''}`);
+                e.setDescription(`Couldn't find \`${name}\`\n Look at the spelling and try again${invalid.includes(summoner.id) && summoner.id ? '\n You have already looked this summoner up, \nplease stop as it would ban my api key if u spam it' : ''}`);
 				msg.channel.send(e);
-				return;	
+				return;
 			}
 		} else {
             e.setDescription(`Couldn't find \`${name}\`\n Look at the spelling and try again${invalid.includes(summoner.id) && summoner.id ? '\n You have already looked this summoner up, \nplease stop as it would ban my api key if u spam it' : ''}`);
