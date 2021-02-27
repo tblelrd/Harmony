@@ -45,14 +45,19 @@ module.exports = {
         }
         args.shift();
         const name = args.join(' ');
-		console.log(invalid);
 
         const summoner = await api.get(region, 'summoner.getBySummonerName', name);
-        if(!summoner.id || (invalid.includes(summoner.id) && summoner.id)) {
+		if(summoner) {
+			if(invalid.includes(summoner.id)) {
+            	e.setDescription(`Couldn't find \`${name}\`\n Look at the spelling and try again${invalid.includes(summoner.id) && summoner.id ? '\n You have already looked this summoner up, \nplease stop as it would ban my api key if u spam it' : ''}`);
+				msg.channel.send(e);
+				return;	
+			}
+		} else {
             e.setDescription(`Couldn't find \`${name}\`\n Look at the spelling and try again${invalid.includes(summoner.id) && summoner.id ? '\n You have already looked this summoner up, \nplease stop as it would ban my api key if u spam it' : ''}`);
             msg.channel.send(e);
             return;
-        }
+		}
         const league = await api.get(region, 'league.getLeagueEntriesForSummoner', summoner.id);
         if(!league[0] || !league[0].summonerId) {
             invalid.push(summoner.id);
