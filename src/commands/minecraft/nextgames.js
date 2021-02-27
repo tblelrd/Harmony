@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 const { MessageEmbed } = require('discord.js');
 const MC = require('minecraft-api');
 const hypixel = require('hypixel');
@@ -12,9 +13,9 @@ const gamemodes = [
     'bw',
     'bedwars',
     'bedwar',
-    // 'skywars',
-    // 'skywar',
-    // 'sw',
+    'skywars',
+    'skywar',
+    'sw',
     // 'duels',
     // 'duel',
 ];
@@ -57,15 +58,14 @@ module.exports = {
             case 'bw':
             case 'bedwars':
             case 'bedwar':
-                wait5games(stats, 'bw', msg);
+                wait5games(stats, 'bw', amount, msg);
             break;
 
-            // case 'sw':
-            // case 'skywars':
-            // case 'skywar':
-            //     info = skywars(stats.stats.Skywars);
-            //     wait5games(info, 'sw');
-            // break;
+            case 'sw':
+            case 'skywars':
+            case 'skywar':
+                wait5games(stats, 'sw', amount, msg);
+            break;
 
             // case 'duel':
             // case 'duels':
@@ -78,7 +78,7 @@ module.exports = {
     },
 };
 
-const bedwars = (oldStats, stats, amount) => {
+const bedwars = (oldStats, stats, amount, mode) => {
     let {
         kills_bedwars,
         deaths_bedwars,
@@ -128,12 +128,49 @@ const bedwars = (oldStats, stats, amount) => {
         wlr: Math.floor((wins_bedwars, (losses_bedwars ? losses_bedwars : 1)) * 100) / 100,
         played: games_played_bedwars,
 		amount: amount,
+        mode: mode,
     };
 
     return info;
-
 };
 
+const skywars = (oldStats, stats, amount, mode) => {
+    let {
+        deaths,
+        kills,
+        wins,
+        losses,
+        games_played_skywars,
+    } = stats;
+    console.log(deaths);
+
+    const {
+        deaths: o_deaths,
+        kills: o_kills,
+        wins: o_wins,
+        losses: o_losses,
+    } = oldStats;
+    console.log(o_deaths);
+
+    deaths -= o_deaths;
+    kills -= o_kills;
+    wins -= o_wins;
+    losses -= o_losses;
+
+    const info = {
+        kills: kills,
+        deaths: deaths,
+        kdr: Math.floor((kills / deaths) * 100) / 100,
+        wins: wins,
+        losses: losses,
+        wlr: Math.floor((wins / losses) * 100) / 100,
+        played: games_played_skywars,
+        amount: amount,
+        mode: mode,
+    };
+
+    return info;
+};
 
 const wait5games = async (info, mode, amount, msg) => {
     if(mode == 'bw') {
@@ -144,12 +181,12 @@ const wait5games = async (info, mode, amount, msg) => {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
                 return;
-            }, 30000);
+            }, 10000);
             return;
         }
         console.log('Waiting finished');
 
-        const bedwarsStats = bedwars(info.stats.Bedwars, stats.stats.Bedwars, amount);
+        const bedwarsStats = bedwars(info.stats.Bedwars, stats.stats.Bedwars, amount, mode);
 
         const playerStats = await statsModel.findOne({ uuid: info.uuid });
         if(!playerStats) {
@@ -163,6 +200,15 @@ const wait5games = async (info, mode, amount, msg) => {
                     stats: bedwarsStats,
                 },
             });
+            const e = new MessageEmbed()
+            .setAuthor(msg.author.name, msg.author.avatarURL())
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
+            .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
+            .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
+            .addField('WLR', `${bedwarsStats.wins} / ${bedwarsStats.losses}: ${bedwarsStats.wlr}`);
+
+            msg.channel.send(e);
             return;
         }
         await statsModel.findOneAndUpdate({ uuid: info.uuid }, {
@@ -177,6 +223,60 @@ const wait5games = async (info, mode, amount, msg) => {
         .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
         .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
         .addField('WLR', `${bedwarsStats.wins} / ${bedwarsStats.losses}: ${bedwarsStats.wlr}`);
+
+        msg.channel.send(e);
+    }
+    if(mode == 'sw') {
+        const stats = await client.getPlayer(info.uuid);
+        const wins = stats.stats.SkyWars.wins;
+        const oldWins = info.stats.SkyWars.wins;
+        const losses = stats.stats.SkyWars.losses;
+        const oldLosses = info.stats.SkyWars.losses;
+        console.log(wins + losses);
+        console.log(oldWins + oldLosses);
+        if(wins + losses < oldWins + oldLosses + amount) {
+            setTimeout(async () => {
+                await wait5games(info, mode, amount, msg);
+                return;
+            }, 10000);
+            return;
+        }
+        console.log('waiting finished');
+
+        const skywarsStats = skywars(info.stats.SkyWars, stats.stats.SkyWars, amount, mode);
+        const playerStats = await statsModel.findOne({ uuid: info.uuid });
+        if(!playerStats) {
+            const statSchema = new statsModel({
+                uuid: info.uuid,
+            });
+            const res = await statSchema.save();
+            console.log(res);
+            await statsModel.findOneAndUpdate({ uuid: info.uuid }, {
+                $push: {
+                    stats: skywarsStats,
+                },
+            });
+            const e = new MessageEmbed()
+            .setAuthor(msg.author.name, msg.author.avatarURL())
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .addField('KDR', `${skywarsStats.kills} / ${skywarsStats.deaths}: ${skywarsStats.kdr}`)
+            .addField('FKDR', `${skywarsStats.fKills} / ${skywarsStats.fDeaths}: ${skywarsStats.fkdr}`)
+            .addField('BBLR', `${skywarsStats.bBroke} / ${skywarsStats.bLost}: ${skywarsStats.bblr}`)
+            .addField('WLR', `${skywarsStats.wins} / ${skywarsStats.losses}: ${skywarsStats.wlr}`);
+
+            msg.channel.send(e);
+            return;
+        }
+        await statsModel.findOneAndUpdate({ uuid: info.uuid }, {
+            $push: {
+                stats: skywarsStats,
+            },
+        });
+        const e = new MessageEmbed()
+		.setAuthor(msg.author.name, msg.author.avatarURL())
+        .setTitle(`\`<${info.displayname}>\`'s stats for the past \`${amount}\` games`)
+        .addField('KDR', `\`${skywarsStats.kills} / ${skywarsStats.deaths}: ${skywarsStats.kdr}\``)
+        .addField('WLR', `\`${skywarsStats.wins} / ${skywarsStats.losses}: ${skywarsStats.wlr}\``);
 
         msg.channel.send(e);
     }
