@@ -20,13 +20,18 @@ const gamemodes = [
 ];
 
 module.exports = {
-    commands: ['next5games'],
-    expectedArgs: '<username> <gamemode>',
-    minArgs: 2,
-    maxArgs: 2,
+    commands: ['nextgames'],
+    expectedArgs: '<username> <gamemode> <amount>',
+    minArgs: 3,
+    maxArgs: 3,
     category: 'Minecraft',
-    desc: 'Stats for the next 5 games of a specific gamemode for a specific player',
+    desc: 'Stats for the next games of a specific gamemode for a specific player',
     callback: async (msg, args) => {
+		const amount = parseInt(args[2]);
+		if(!amount || amount < 1 || amount >= 10) {
+			msg.reply('Please specify an amount between 1 and 10');
+			return;
+		}
         const mode = args[1].toLowerCase();
         const e = new MessageEmbed()
         .setAuthor(msg.author.username, msg.author.avatarURL());
@@ -73,7 +78,7 @@ module.exports = {
     },
 };
 
-const bedwars = (oldStats, stats) => {
+const bedwars = (oldStats, stats, amount) => {
     let {
         kills_bedwars,
         deaths_bedwars,
@@ -122,6 +127,7 @@ const bedwars = (oldStats, stats) => {
         wins: wins_bedwars,
         wlr: Math.floor((wins_bedwars, (losses_bedwars ? losses_bedwars : 1)) * 100) / 100,
         played: games_played_bedwars,
+		amount: amount,
     };
 
     return info;
@@ -129,23 +135,21 @@ const bedwars = (oldStats, stats) => {
 };
 
 
-const wait5games = async (info, mode, msg) => {
-    const e = new MessageEmbed()
-    .setAuthor(msg.author.name, msg.author.avatarURL());
+const wait5games = async (info, mode, amount, msg) => {
     if(mode == 'bw') {
         const stats = await client.getPlayer(info.uuid);
         const gamesPlayed = stats.stats.Bedwars.games_played_bedwars;
         const oldGamesPlayed = info.stats.Bedwars.games_played_bedwars;
-        if(gamesPlayed < oldGamesPlayed + 5) {
+        if(gamesPlayed < oldGamesPlayed + amount) {
             setTimeout(async () => {
-                await wait5games(info, mode);
+                await wait5games(info, mode, amount, msg);
                 return;
             }, 30000);
             return;
         }
         console.log('Waiting finished');
 
-        const bedwarsStats = bedwars(info, stats);
+        const bedwarsStats = bedwars(info.stats.Bedwars, stats.stats.Bedwars, amount);
 
         const playerStats = await statsModel.findOne({ uuid: info.uuid });
         if(!playerStats) {
@@ -166,8 +170,9 @@ const wait5games = async (info, mode, msg) => {
                 stats: bedwarsStats,
             },
         });
-
-        e.setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+		const e = new MessageEmbed()
+		.setAuthor(msg.author.name, msg.author.avatarURL())
+        .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
         .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
         .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
         .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
