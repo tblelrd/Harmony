@@ -179,7 +179,7 @@ const wait5games = async (info, mode, amount, msg) => {
         const oldWins = info.stats.Bedwars.wins_bedwars;
         const losses = stats.stats.Bedwars.losses_bedwars;
         const oldLosses = info.stats.Bedwars.losses_bedwars;
-        if(gamesPlayed < oldGamesPlayed + amount) {
+        if(wins + losses < oldWins + oldLosses + amount) {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
                 return;
