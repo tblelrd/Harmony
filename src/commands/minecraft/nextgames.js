@@ -92,15 +92,15 @@ const bedwars = (oldStats, stats, amount, mode) => {
     } = stats;
 
     const {
-        o_kills_bedwars,
-        o_deaths_bedwars,
-        o_final_kills_bedwars,
-        o_final_deaths_bedwars,
-        o_beds_broken_bedwars,
-        o_beds_lost_bedwars,
-        o_losses_bedwars,
-        o_wins_bedwars,
-        o_games_played_bedwars,
+        kills_bedwars: o_kills_bedwars,
+        deaths_bedwars: o_deaths_bedwars,
+        final_kills_bedwars: o_final_kills_bedwars,
+        final_death_bedwars: o_final_deaths_bedwars,
+        beds_broken_bedwars: o_beds_broken_bedwars,
+        beds_lost_bedwars: o_beds_lost_bedwars,
+        losses_bedwars: o_losses_bedwars,
+        wins_bedwars: o_wins_bedwars,
+        games_played_bedwars: o_games_played_bedwars,
     } = oldStats;
 
     kills_bedwars -= o_kills_bedwars;
@@ -204,7 +204,7 @@ const wait5games = async (info, mode, amount, msg) => {
             });
             const e = new MessageEmbed()
             .setAuthor(msg.author.name, msg.author.avatarURL())
-            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
             .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
             .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
             .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
@@ -220,7 +220,7 @@ const wait5games = async (info, mode, amount, msg) => {
         });
 		const e = new MessageEmbed()
 		.setAuthor(msg.author.name, msg.author.avatarURL())
-        .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+        .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
         .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
         .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
         .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
@@ -258,10 +258,8 @@ const wait5games = async (info, mode, amount, msg) => {
             });
             const e = new MessageEmbed()
             .setAuthor(msg.author.name, msg.author.avatarURL())
-            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
             .addField('KDR', `${skywarsStats.kills} / ${skywarsStats.deaths}: ${skywarsStats.kdr}`)
-            .addField('FKDR', `${skywarsStats.fKills} / ${skywarsStats.fDeaths}: ${skywarsStats.fkdr}`)
-            .addField('BBLR', `${skywarsStats.bBroke} / ${skywarsStats.bLost}: ${skywarsStats.bblr}`)
             .addField('WLR', `${skywarsStats.wins} / ${skywarsStats.losses}: ${skywarsStats.wlr}`);
 
             msg.channel.send(e);
