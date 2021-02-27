@@ -175,8 +175,10 @@ const skywars = (oldStats, stats, amount, mode) => {
 const wait5games = async (info, mode, amount, msg) => {
     if(mode == 'bw') {
         const stats = await client.getPlayer(info.uuid);
-        const gamesPlayed = stats.stats.Bedwars.games_played_bedwars;
-        const oldGamesPlayed = info.stats.Bedwars.games_played_bedwars;
+        const wins = stats.stats.Bedwars.wins_bedwars;
+        const oldWins = info.stats.Bedwars.wins_bedwars;
+        const losses = stats.stats.Bedwars.losses_bedwars;
+        const oldLosses = info.stats.Bedwars.losses_bedwars;
         if(gamesPlayed < oldGamesPlayed + amount) {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
@@ -232,8 +234,6 @@ const wait5games = async (info, mode, amount, msg) => {
         const oldWins = info.stats.SkyWars.wins;
         const losses = stats.stats.SkyWars.losses;
         const oldLosses = info.stats.SkyWars.losses;
-        console.log(wins + losses);
-        console.log(oldWins + oldLosses);
         if(wins + losses < oldWins + oldLosses + amount) {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
