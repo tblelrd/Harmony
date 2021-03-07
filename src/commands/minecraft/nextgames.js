@@ -91,15 +91,15 @@ const bedwars = (oldStats, stats, amount, mode) => {
     } = stats;
 
     const {
-        o_kills_bedwars,
-        o_deaths_bedwars,
-        o_final_kills_bedwars,
-        o_final_deaths_bedwars,
-        o_beds_broken_bedwars,
-        o_beds_lost_bedwars,
-        o_losses_bedwars,
-        o_wins_bedwars,
-        o_games_played_bedwars,
+        kills_bedwars: o_kills_bedwars,
+        deaths_bedwars: o_deaths_bedwars,
+        final_kills_bedwars: o_final_kills_bedwars,
+        final_deaths_bedwars: o_final_deaths_bedwars,
+        beds_broken_bedwars: o_beds_broken_bedwars,
+        beds_lost_bedwars: o_beds_lost_bedwars,
+        losses_bedwars: o_losses_bedwars,
+        wins_bedwars: o_wins_bedwars,
+        games_played_bedwars: o_games_played_bedwars,
     } = oldStats;
 
     kills_bedwars -= o_kills_bedwars;
@@ -118,13 +118,13 @@ const bedwars = (oldStats, stats, amount, mode) => {
         kdr: Math.floor((kills_bedwars / (deaths_bedwars ? deaths_bedwars : 1)) * 100) / 100,
         fKills: final_kills_bedwars,
         fDeaths: final_deaths_bedwars,
-        fkdr: Math.floor((final_kills_bedwars, (final_deaths_bedwars ? final_deaths_bedwars : 1)) * 100) / 100,
+        fkdr: Math.floor((final_kills_bedwars / (final_deaths_bedwars ? final_deaths_bedwars : 1)) * 100) / 100,
         bBroke: beds_broken_bedwars,
         bLost: beds_lost_bedwars,
-        bblr: Math.floor((beds_broken_bedwars, (beds_lost_bedwars ? beds_lost_bedwars : 1)) * 100) / 100,
+        bblr: Math.floor((beds_broken_bedwars / (beds_lost_bedwars ? beds_lost_bedwars : 1)) * 100) / 100,
         losses: losses_bedwars,
         wins: wins_bedwars,
-        wlr: Math.floor((wins_bedwars, (losses_bedwars ? losses_bedwars : 1)) * 100) / 100,
+        wlr: Math.floor((wins_bedwars / (losses_bedwars ? losses_bedwars : 1)) * 100) / 100,
         played: games_played_bedwars,
 		amount: amount,
         mode: mode,
@@ -157,10 +157,10 @@ const skywars = (oldStats, stats, amount, mode) => {
     const info = {
         kills: kills,
         deaths: deaths,
-        kdr: Math.floor((kills / deaths) * 100) / 100,
+        kdr: Math.floor((kills / (deaths ? deaths : 1)) * 100) / 100,
         wins: wins,
         losses: losses,
-        wlr: Math.floor((wins / losses) * 100) / 100,
+        wlr: Math.floor((wins / (losses ? losses : 1)) * 100) / 100,
         played: games_played_skywars,
         amount: amount,
         mode: mode,
@@ -207,9 +207,11 @@ const duels = (oldStats, stats, amount, mode) => {
 const wait5games = async (info, mode, amount, msg) => {
     if(mode == 'bw') {
         const stats = await client.getPlayer(info.uuid);
-        const gamesPlayed = stats.stats.Bedwars.games_played_bedwars;
-        const oldGamesPlayed = info.stats.Bedwars.games_played_bedwars;
-        if(gamesPlayed < oldGamesPlayed + amount) {
+        const wins = stats.stats.Bedwars.wins_bedwars;
+        const oldWins = info.stats.Bedwars.wins_bedwars;
+        const losses = stats.stats.Bedwars.losses_bedwars;
+        const oldLosses = info.stats.Bedwars.losses_bedwars;
+        if(wins + losses < oldWins + oldLosses + amount) {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
                 return;
@@ -233,8 +235,8 @@ const wait5games = async (info, mode, amount, msg) => {
                 },
             });
             const e = new MessageEmbed()
-            .setAuthor(msg.author.name, msg.author.avatarURL())
-            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .setAuthor(msg.author.username, msg.author.avatarURL())
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
             .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
             .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
             .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
@@ -249,8 +251,8 @@ const wait5games = async (info, mode, amount, msg) => {
             },
         });
 		const e = new MessageEmbed()
-		.setAuthor(msg.author.name, msg.author.avatarURL())
-        .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+		.setAuthor(msg.author.username, msg.author.avatarURL())
+        .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
         .addField('KDR', `${bedwarsStats.kills} / ${bedwarsStats.deaths}: ${bedwarsStats.kdr}`)
         .addField('FKDR', `${bedwarsStats.fKills} / ${bedwarsStats.fDeaths}: ${bedwarsStats.fkdr}`)
         .addField('BBLR', `${bedwarsStats.bBroke} / ${bedwarsStats.bLost}: ${bedwarsStats.bblr}`)
@@ -288,10 +290,8 @@ const wait5games = async (info, mode, amount, msg) => {
             });
             const e = new MessageEmbed()
             .setAuthor(msg.author.name, msg.author.avatarURL())
-            .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+            .setTitle(`\`<${info.displayname}>\`'s stats for the past ${amount} games`)
             .addField('KDR', `${skywarsStats.kills} / ${skywarsStats.deaths}: ${skywarsStats.kdr}`)
-            .addField('FKDR', `${skywarsStats.fKills} / ${skywarsStats.fDeaths}: ${skywarsStats.fkdr}`)
-            .addField('BBLR', `${skywarsStats.bBroke} / ${skywarsStats.bLost}: ${skywarsStats.bblr}`)
             .addField('WLR', `${skywarsStats.wins} / ${skywarsStats.losses}: ${skywarsStats.wlr}`);
 
             msg.channel.send(e);

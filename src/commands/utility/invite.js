@@ -11,7 +11,7 @@ module.exports = {
         try {
             const e = new MessageEmbed()
             .setTitle('Link to invite me to your server')
-            .setURL('https://discord.com/api/oauth2/authorize?client_id=803556894487740447&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2FAeXJxaE8&scope=bot')
+            .setURL('https://discord.com/api/oauth2/authorize?client_id=803556894487740447&permissions=4294442999&redirect_uri=https%3A%2F%2Fdiscord.gg%2FAeXJxaE8&scope=bot')
             .setDescription(`\`${prefix}help\` to display help`)
             .setAuthor(bot.user.username, bot.user.avatarURL());
 
