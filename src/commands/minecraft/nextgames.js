@@ -16,8 +16,8 @@ const gamemodes = [
     'skywars',
     'skywar',
     'sw',
-    // 'duels',
-    // 'duel',
+    'duels',
+    'duel',
 ];
 
 module.exports = {
@@ -67,11 +67,10 @@ module.exports = {
                 wait5games(stats, 'sw', amount, msg);
             break;
 
-            // case 'duel':
-            // case 'duels':
-            //     info = duels(stats);
-            //     wait5games(info, 'duels');
-            // break;
+            case 'duel':
+            case 'duels':
+                wait5games(stats, 'duels', amount, msg);
+            break;
         }
         e.setDescription(`Started data for ${stats.displayname}`);
         msg.channel.send(e);
@@ -142,7 +141,6 @@ const skywars = (oldStats, stats, amount, mode) => {
         losses,
         games_played_skywars,
     } = stats;
-    console.log(deaths);
 
     const {
         deaths: o_deaths,
@@ -150,7 +148,6 @@ const skywars = (oldStats, stats, amount, mode) => {
         wins: o_wins,
         losses: o_losses,
     } = oldStats;
-    console.log(o_deaths);
 
     deaths -= o_deaths;
     kills -= o_kills;
@@ -170,6 +167,41 @@ const skywars = (oldStats, stats, amount, mode) => {
     };
 
     return info;
+};
+
+const duels = (oldStats, stats, amount, mode) => {
+    let {
+        wins,
+        losses,
+        kills,
+        deaths,
+    } = stats;
+
+    const {
+        wins: o_wins,
+        losses: o_losses,
+        kills: o_kills,
+        deaths: o_deaths,
+    } = oldStats;
+
+    deaths -= o_deaths;
+    kills -= o_kills;
+    wins -= o_wins;
+    losses -= o_losses;
+
+    const info = {
+        kills,
+        deaths,
+        kdr: Math.floor((kills / deaths ? deaths : 1)),
+        wins,
+        losses,
+        wlr: Math.floor((kills / deaths ? deaths : 1)),
+        amount,
+        mode,
+    };
+
+    return info;
+
 };
 
 const wait5games = async (info, mode, amount, msg) => {
@@ -232,8 +264,6 @@ const wait5games = async (info, mode, amount, msg) => {
         const oldWins = info.stats.SkyWars.wins;
         const losses = stats.stats.SkyWars.losses;
         const oldLosses = info.stats.SkyWars.losses;
-        console.log(wins + losses);
-        console.log(oldWins + oldLosses);
         if(wins + losses < oldWins + oldLosses + amount) {
             setTimeout(async () => {
                 await wait5games(info, mode, amount, msg);
@@ -279,5 +309,30 @@ const wait5games = async (info, mode, amount, msg) => {
         .addField('WLR', `\`${skywarsStats.wins} / ${skywarsStats.losses}: ${skywarsStats.wlr}\``);
 
         msg.channel.send(e);
+    }
+    if(mode == 'duels') {
+        const stats = await client.getPlayer(info.uuid);
+        const wins = stats.stats.Duels.wins;
+        const oldWins = info.stats.Duels.wins;
+        const losses = stats.stats.Duels.losses;
+        const oldLosses = info.stats.Duels.losses;
+        if(wins + losses < oldWins + oldLosses + amount) {
+            setTimeout(async () => {
+                await wait5games(info, mode, amount, msg);
+                return;
+            }, 10000);
+            return;
+        }
+        console.log('waiting finished');
+        const duelsStats = duels(info.stats.SkyWars, stats.stats.SkyWars, amount, mode);
+
+        const e = new MessageEmbed()
+        .setAuthor(msg.author.name, msg.author.avatarURL())
+        .setTitle(`\`<${info.displayname}>\`'s stats for the past 5 games`)
+        .addField('KDR', `${duelsStats.kills} / ${duelsStats.deaths}: ${duelsStats.kdr}`)
+        .addField('WLR', `${duelsStats.wins} / ${duelsStats.losses}: ${duelsStats.wlr}`);
+
+        msg.channel.send(e);
+
     }
 };
