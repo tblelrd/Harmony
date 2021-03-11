@@ -5,9 +5,9 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     commands: ['readdoujin', 'rd'],
-    expectedArgs: '<doujin number>',
-    minArgs: 1,
-    maxArgs: 1,
+    expectedArgs: '<doujin number> <page>',
+    minArgs: 2,
+    maxArgs: 2,
     permissions: ['ADMINISTRATOR'],
     category: ['Weeb'],
     desc: 'Godly command',
@@ -19,13 +19,10 @@ module.exports = {
             const e = new MessageEmbed()
             .setTitle(data.title)
             .setURL(data.url);
+            if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
 
-            console.log(data.pages);
-
-            for(const page of data.pages) {
-                e.setImage(page);
-                msg.channel.send(e);
-            }
+            e.setImage(data.pages[parseInt(args[1]) - 1]);
+            msg.channel.send(e);
         } catch(err) {
             console.log(err);
         }
