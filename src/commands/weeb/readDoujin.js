@@ -17,8 +17,10 @@ module.exports = {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
             if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
+            const regex = /([0-9]+)t/;
+            const yes = regex.exec(data.pages[parseInt(args[1]) - 1]);
 
-            msg.channel.send(data.pages[parseInt(args[1]) - 1]);
+            msg.channel.send(data.pages[parseInt(args[1]) - 1].replace(/[0-9]+t/, yes[1]));
         } catch(err) {
             console.log(err);
         }
