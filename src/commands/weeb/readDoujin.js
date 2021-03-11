@@ -25,7 +25,7 @@ module.exports = {
                 msg.channel.send(e);
             }
         } catch(err) {
-            msg.reply(err);
+            console.log(err);
         }
     },
 };
