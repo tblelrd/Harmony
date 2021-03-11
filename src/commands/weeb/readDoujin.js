@@ -30,7 +30,7 @@ module.exports = {
                 const e = new MessageEmbed()
                 .setTitle(parseInt(pageNo + 1))
                 .attachFiles(attachment)
-                .setImage(`attachments://${data.title}-${pageNo}.jpg`);
+                .setImage(`attachment://${data.title}-${pageNo}.jpg`);
 
                 msg.channel.send(e);
             });
