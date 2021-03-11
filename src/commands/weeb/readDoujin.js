@@ -1,6 +1,8 @@
 const rp = require('request-promise');
 const $ = require('cheerio');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
+const request = require('request').defaults({ encoding: null });
+
 
 module.exports = {
     commands: ['readdoujin', 'rd'],
@@ -12,17 +14,28 @@ module.exports = {
     desc: 'Godly command',
     dm: true,
     callback: async (msg, args) => {
+        const pageNo = parseInt(args[1]) - 1;
+
         try {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
             if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
             const regex = /([0-9]+)t/;
-            const yes = regex.exec(data.pages[parseInt(args[1]) - 1]);
-            const e = new MessageEmbed()
-            .setTitle(parseInt(args[1]))
-            .setImage(data.pages[parseInt(args[1]) - 1].replace(/[0-9]+t/, yes[1]));
+            const yes = regex.exec(data.pages[pageNo]);
 
-            msg.channel.send(e);
+            request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1])), function (err, res, body) {
+                console.log(body);
+
+                const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
+                const e = new MessageEmbed()
+                .setTitle(parseInt(pageNo + 1))
+                .attachFiles(attachment)
+                .setImage(`attachments://${data.title}-${pageNo}.jpg`);
+
+                msg.channel.send(e);
+            });
+
+
         } catch(err) {
             console.log(err);
         }
