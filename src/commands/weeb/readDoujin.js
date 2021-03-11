@@ -19,6 +19,7 @@ module.exports = {
             const regex = /([0-9]+)t/;
             const yes = regex.exec(data.pages[parseInt(args[1]) - 1]);
             const e = new MessageEmbed()
+            .setTitle(parseInt(args[1]))
             .setImage(data.pages[parseInt(args[1]) - 1].replace(/[0-9]+t/, yes[1]));
 
             msg.channel.send(e);
