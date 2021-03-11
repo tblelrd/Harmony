@@ -11,20 +11,21 @@ module.exports = {
     permissions: ['ADMINISTRATOR'],
     category: ['Weeb'],
     desc: 'Godly command',
+    dm: true,
     callback: async (msg, args) => {
         try {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
             const e = new MessageEmbed()
             .setTitle(data.title)
-            .setURL(data.url)
+            .setURL(data.url);
 
             for(const page of data.pages) {
                 e.setImage(page);
                 msg.channel.send(e);
             }
-        } catch {
-            msg.reply('error');
+        } catch(err) {
+            msg.reply(err);
         }
     },
 };
