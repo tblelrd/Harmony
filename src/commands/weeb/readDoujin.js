@@ -23,7 +23,7 @@ module.exports = {
             const regex = /([0-9]+)t/;
             const yes = regex.exec(data.pages[pageNo]);
 
-            request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1])), function (err, res, body) {
+            request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), function (err, res, body) {
                 console.log(body);
 
                 const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
