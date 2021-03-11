@@ -20,6 +20,8 @@ module.exports = {
             .setTitle(data.title)
             .setURL(data.url);
 
+            console.log(data.pages);
+
             for(const page of data.pages) {
                 e.setImage(page);
                 msg.channel.send(e);
@@ -30,29 +32,8 @@ module.exports = {
     },
 };
 
-const findPages = async (html) => {
-	const regex = /<img.*?data-src="(.*?)"/gm;
-	const linkRegex = /data-src="(.*)"/gm;
-
-	const matches = html.match(regex);
-	const links = [];
-	let toggle = true;
-	for(let i = 0; i < matches.length;) {
-		const matching = linkRegex.exec(matches[i]);
-		if(matching) {
-			links.push(matching[1]);
-		}
-		toggle = !toggle;
-		if(toggle) {
-			i++;
-		}
-	}
-
-	return links;
-};
 const findDoujin = async (id) => {
     const url = `https://nhentai.to/g/${id}`;
-
     const html = await rp(url);
     if(!html) return;
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
@@ -80,4 +61,25 @@ const shiftnpop = (arr) => {
 	arr.shift();
 	arr.pop();
 	return arr;
+};
+
+const findPages = (html) => {
+    const regex = /<img.*?data-src="(.*?)"/gm;
+    const linkRegex = /data-src="(.*)"/gm;
+
+    const matches = html.match(regex);
+    const links = [];
+    let toggle = true;
+    for(let i = 0; i < matches.length;) {
+        const matching = linkRegex.exec(matches[i]);
+        if(matching) {
+            links.push(matching[1]);
+        }
+        toggle = !toggle;
+        if(toggle) {
+            i++;
+        }
+    }
+
+    return links;
 };
