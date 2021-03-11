@@ -16,13 +16,9 @@ module.exports = {
         try {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
-            const e = new MessageEmbed()
-            .setTitle(data.title)
-            .setURL(data.url);
             if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
 
-            e.setImage(data.pages[parseInt(args[1]) - 1]);
-            msg.channel.send(e);
+            msg.channel.send(data.pages[parseInt(args[1]) - 1]);
         } catch(err) {
             console.log(err);
         }
