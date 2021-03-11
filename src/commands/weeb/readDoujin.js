@@ -2,7 +2,6 @@ const rp = require('request-promise');
 const $ = require('cheerio');
 const { MessageEmbed } = require('discord.js');
 
-
 module.exports = {
     commands: ['readdoujin', 'rd'],
     expectedArgs: '<doujin number> <page>',
@@ -19,8 +18,10 @@ module.exports = {
             if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
             const regex = /([0-9]+)t/;
             const yes = regex.exec(data.pages[parseInt(args[1]) - 1]);
+            const e = new MessageEmbed()
+            .setImage(data.pages[parseInt(args[1]) - 1].replace(/[0-9]+t/, yes[1]));
 
-            msg.channel.send(data.pages[parseInt(args[1]) - 1].replace(/[0-9]+t/, yes[1]));
+            msg.channel.send(e);
         } catch(err) {
             console.log(err);
         }
