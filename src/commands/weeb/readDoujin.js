@@ -15,20 +15,11 @@ module.exports = {
     dm: true,
     callback: async (msg, args, text, bot) => {
         const pageNo = parseInt(args[1]) - 1;
+        const data = await findDoujin(args[0]);
+        if(!data) msg.reply('Invalid id or smthn');
 
         try {
-            const data = await findDoujin(args[0]);
-            if(!data) msg.reply('Invalid id or smthn');
-
-            const message = await read(data, pageNo, msg);
-            const collector = message.createReactionCollector(
-                (reaction, user) => bot.users.cache.find((_user) => _user.id == user.id).id !==
-                bot.user.id,
-            );
-
-            collector.on('collect', (reaction, user) => {
-                console.log(user.username);
-            });
+            read(data, pageNo, msg);
 
         } catch(err) {
             console.log(err);
@@ -36,7 +27,27 @@ module.exports = {
     },
 };
 
-const read = async (data, pageNo, msg) => {
+const read = async (data, pageNo, msg, bot) => {
+
+    const message = await sendEmbed(data, pageNo, msg);
+    const collector = message.createReactionCollector(
+        (reaction, user) => bot.users.cache.find((_user) => _user.id == user.id).id !==
+        bot.user.id,
+    );
+
+    collector.on('collect', (reaction, user) => {
+        switch(reaction.emoji.name) {
+            case '⬅':
+                read(data, pageNo - 1, msg, bot);
+            break;
+            case '➡':
+                read(data, pageNo + 1, msg, bot);
+            break;
+        }
+    });
+};
+
+const sendEmbed = async (data, pageNo, msg) => {
     const regex = /([0-9]+)t/;
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
