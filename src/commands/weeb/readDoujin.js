@@ -3,7 +3,7 @@ const $ = require('cheerio');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const request = require('request').defaults({ encoding: null });
 
-
+// https://t.nhentai.net/galleries/{number}/{page}.jpg
 module.exports = {
     commands: ['readdoujin', 'rd'],
     expectedArgs: '<doujin number> <page>',
@@ -49,17 +49,11 @@ const read = async (data, pageNo, msg, bot) => {
 };
 
 const sendEmbed = async (data, pageNo, msg) => {
-    const regex = /([0-9]+)t/;
-    const yes = regex.exec(data.pages[pageNo]);
-    if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
     const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
-    const body = await doRequest(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
-    .attachFiles([attachment])
-    .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
+    .setImage(`https://t.nhentai.net/galleries/${data.id}/${pageNo}.jpg`);
 
     const message = await msg.channel.send(e);
     await pleaseWait.delete();
@@ -75,66 +69,62 @@ const sendEmbed = async (data, pageNo, msg) => {
 
 };
 
-function doRequest(url) {
-    return new Promise(function (resolve, reject) {
-      request(url, function (error, res, body) {
-        if (!error && res.statusCode == 200) {
-          resolve(body);
-        } else {
-          reject(error);
-        }
-      });
-    });
-  }
+// function doRequest(url) {
+//     return new Promise(function (resolve, reject) {
+//       request(url, function (error, res, body) {
+//         if (!error && res.statusCode == 200) {
+//           resolve(body);
+//         } else {
+//           reject(error);
+//         }
+//       });
+//     });
+//   }
 
 const findDoujin = async (id) => {
-    const url = `https://nhentai.to/g/${id}`;
+    const url = `https://nhentai.net/g/${id}`;
+
+	const tags = [];
+	const characters = [];
+	const langs = [];
+
     const html = await rp(url);
-    if(!html) return;
-    const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
-    const title = $('div[id=info-block] > div[id=info] > h1', html).html();
-    const _tag = $('section > div:contains("Tags")', html).text().split(/[ \n]{2,}/);
-	const _chr = $('section > div:contains("Characters")', html).text().split(/[ \n]{2,}/);
-	const lang = $('section > div:contains("Languages")', html).text().split(/[ \n]{2,}/);
-	const chr = shiftnpop(_chr);
-	const tag = shiftnpop(_tag);
-    const pages = findPages($('div#thumbnail-container', html).html());
-    const data = {
-        pages: pages,
-        img: img,
-        title: title,
-        url: url,
-        tags: tag,
-		chr: chr,
-		lang: shiftnpop(lang),
-    };
-    return data;
+	const img = $('div > div > a > img.lazyload', html)[1].attribs['data-src'];
+    const title = $('div[id=info-block] > div[id=info] > h1 > span.pretty', html).html();
+    $('section > div:contains(Tags:) > span.tags > a > span.name', html).each((i, element) => tags.push($(element).html()));
+	$('section > div:contains(Characters:) > span.tags > a > span.name', html).each((i, element) => characters.push($(element).html()));
+	$('section > div:contains(Languages:) > span.tags > a > span.name', html).each((i, element) => langs.push($(element).html()));
+
+	const data = {
+		html,
+		img,
+		title,
+		tags,
+		characters,
+		langs,
+        id,
+	};
+	return data;
 };
 
-const shiftnpop = (arr) => {
-	arr.shift();
-	arr.shift();
-	arr.pop();
-	return arr;
-};
 
-const findPages = (html) => {
-    const regex = /<img.*?data-src="(.*?)"/gm;
-    const linkRegex = /data-src="(.*)"/gm;
+// const findPages = (html) => {
+//     const regex = /<img.*?data-src="(.*?)"/gm;
+//     const linkRegex = /data-src="(.*)"/gm;
 
-    const matches = html.match(regex);
-    const links = [];
-    let toggle = true;
-    for(let i = 0; i < matches.length;) {
-        const matching = linkRegex.exec(matches[i]);
-        if(matching) {
-            links.push(matching[1]);
-        }
-        toggle = !toggle;
-        if(toggle) {
-            i++;
-        }
-    }
+//     const matches = html.match(regex);
+//     const links = [];
+//     let toggle = true;
+//     for(let i = 0; i < matches.length;) {
+//         const matching = linkRegex.exec(matches[i]);
+//         if(matching) {
+//             links.push(matching[1]);
+//         }
+//         toggle = !toggle;
+//         if(toggle) {
+//             i++;
+//         }
+//     }
 
-    return links;
-};
+//     return links;
+// };

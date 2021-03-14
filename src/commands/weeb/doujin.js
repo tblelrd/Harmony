@@ -21,8 +21,8 @@ module.exports = {
             .setURL(data.url)
             .setImage(data.img)
             .addField('Tags', data.tags.map((tag) => `\`${tag}\``).join(' ') || 'No tags', true)
-			.addField('Characters', data.chr.map((chr) => `\`${chr}\``).join(' ') || 'None specified', true)
-			.addField('Languages', data.lang.map((lang) => `\`${lang}\``).join(' ') || 'None specified', true);
+			.addField('Characters', data.characters.map((chr) => `\`${chr}\``).join(' ') || 'None specified', true)
+			.addField('Languages', data.langs.map((lang) => `\`${lang}\``).join(' ') || 'None specified', true);
 
             msg.channel.send(e);
         } catch {
@@ -33,32 +33,26 @@ module.exports = {
 };
 
 const findDoujin = async (id) => {
-    const url = `https://nhentai.to/g/${id}`;
+    const url = `https://nhentai.net/g/${id}`;
+
+	const tags = [];
+	const characters = [];
+	const langs = [];
 
     const html = await rp(url);
-    if(!html) return;
-    const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
-    const title = $('div[id=info-block] > div[id=info] > h1', html).html();
-    const _tag = $('section > div:contains("Tags")', html).text().split(/[ \n]{2,}/);
-	const _chr = $('section > div:contains("Characters")', html).text().split(/[ \n]{2,}/);
-	const lang = $('section > div:contains("Languages")', html).text().split(/[ \n]{2,}/);
-	const chr = shiftnpop(_chr); // idk why but first 2 elements are nothing and the last one is also nothing
-	const tag = shiftnpop(_tag);
-    const data = {
-        img: img,
-        title: title,
-        url: url,
-        tags: tag,
-		chr: chr,
-		lang: shiftnpop(lang),
-    };
-    return data;
-};
+	const img = $('div > div > a > img.lazyload', html)[1].attribs['data-src'];
+    const title = $('div[id=info-block] > div[id=info] > h1 > span.pretty', html).html();
+    $('section > div:contains(Tags:) > span.tags > a > span.name', html).each((i, element) => tags.push($(element).html()));
+	$('section > div:contains(Characters:) > span.tags > a > span.name', html).each((i, element) => characters.push($(element).html()));
+	$('section > div:contains(Languages:) > span.tags > a > span.name', html).each((i, element) => langs.push($(element).html()));
 
-const shiftnpop = (arr) => {
-	arr.shift();
-	arr.shift();
-	arr.pop();
-	return arr;
+	const data = {
+		html,
+		img,
+		title,
+		tags,
+		characters,
+		langs,
+	};
+	return data;
 };
-
