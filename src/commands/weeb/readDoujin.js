@@ -38,9 +38,11 @@ const read = async (data, pageNo, msg, bot) => {
     collector.on('collect', (reaction) => {
         switch(reaction.emoji.name) {
             case '⬅':
+                console.log('previous page');
                 read(data, pageNo - 1, msg, bot);
             break;
             case '➡':
+                console.log('next page');
                 read(data, pageNo + 1, msg, bot);
             break;
         }
@@ -51,7 +53,7 @@ const sendEmbed = async (data, pageNo, msg) => {
     const regex = /([0-9]+)t/;
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
-    let message = 1;
+    const message = await msg.channel.send('Please wait as the image takes a while to load');
 
     const body = await doRequest(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
     const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
@@ -60,7 +62,7 @@ const sendEmbed = async (data, pageNo, msg) => {
     .attachFiles([attachment])
     .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-    message = await msg.channel.send(e);
+    await message.edit(e);
 
     try {
         message.react('⬅');
