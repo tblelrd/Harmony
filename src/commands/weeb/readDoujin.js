@@ -49,11 +49,15 @@ const read = async (data, pageNo, msg, bot) => {
 };
 
 const sendEmbed = async (data, pageNo, msg) => {
+    if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
     const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
+    const body = await doRequest(`https://t.nhentai.net/galleries/${data.id}/${pageNo}.jpg`);
+    const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
-    .setImage(`https://t.nhentai.net/galleries/${data.id}/${pageNo}.jpg`);
+    .attachFiles([attachment])
+    .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
     const message = await msg.channel.send(e);
     await pleaseWait.delete();
@@ -69,19 +73,19 @@ const sendEmbed = async (data, pageNo, msg) => {
 
 };
 
-// function doRequest(url) {
-//     return new Promise(function (resolve, reject) {
-//       request(url, function (error, res, body) {
-//         if (!error && res.statusCode == 200) {
-//           resolve(body);
-//         } else {
-//           reject(error);
-//         }
-//       });
-//     });
-//   }
+function doRequest(url) {
+    return new Promise(function (resolve, reject) {
+      request(url, function (error, res, body) {
+        if (!error && res.statusCode == 200) {
+          resolve(body);
+        } else {
+          reject(error);
+        }
+      });
+    });
+  }
 
-const findDoujin = async (id) => {
+  const findDoujin = async (id) => {
     const url = `https://nhentai.net/g/${id}`;
 
 	const tags = [];
