@@ -38,11 +38,9 @@ const read = async (data, pageNo, msg, bot) => {
     collector.on('collect', (reaction) => {
         switch(reaction.emoji.name) {
             case '⬅':
-                console.log('previous page');
                 read(data, pageNo - 1, msg, bot);
             break;
             case '➡':
-                console.log('next page');
                 read(data, pageNo + 1, msg, bot);
             break;
         }
