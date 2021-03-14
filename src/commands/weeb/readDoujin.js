@@ -21,10 +21,7 @@ module.exports = {
             if(!data) msg.reply('Invalid id or smthn');
 
             const message = await read(data, pageNo, msg);
-            console.log(message);
-            const collector = message.createReactionCollector(
-                (reaction, user) => bot.users.cache.get((_user) => user.id == _user.id),
-            );
+            const collector = message.createReactionCollector();
 
             collector.on('collect', (reaction, user) => {
                 console.log(user.username);
