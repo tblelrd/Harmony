@@ -33,7 +33,7 @@ module.exports = {
 };
 
 const findDoujin = async (id) => {
-    const url = `https://nhentai.to/g/${id}`;
+    const url = `https://nhentai.net/g/${id}`;
 
     const html = await rp(url);
     if(!html) return;
