@@ -22,8 +22,8 @@ module.exports = {
 
             const message = await read(data, pageNo, msg);
             const collector = message.createReactionCollector(
-                (reaction, user) => bot.users.cache.find((_user) => _user.id == user.id).id ==
-                user.id,
+                (reaction, user) => bot.users.cache.find((_user) => _user.id == user.id).id !==
+                bot.user.id,
             );
 
             collector.on('collect', (reaction, user) => {
