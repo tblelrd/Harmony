@@ -49,7 +49,6 @@ const read = async (data, pageNo, msg, bot) => {
 };
 
 const sendEmbed = async (data, pageNo, msg) => {
-    if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
     const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
     const body = await doRequest(`https://t.nhentai.net/galleries/${data.id}/${pageNo}.jpg`);
