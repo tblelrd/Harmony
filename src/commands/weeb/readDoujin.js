@@ -19,7 +19,7 @@ module.exports = {
         if(!data) msg.reply('Invalid id or smthn');
 
         try {
-            read(data, pageNo, msg);
+            read(data, pageNo, msg, bot);
 
         } catch(err) {
             console.log(err);
@@ -35,7 +35,7 @@ const read = async (data, pageNo, msg, bot) => {
         bot.user.id,
     );
 
-    collector.on('collect', (reaction, user) => {
+    collector.on('collect', (reaction) => {
         switch(reaction.emoji.name) {
             case '⬅':
                 read(data, pageNo - 1, msg, bot);
