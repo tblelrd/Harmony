@@ -20,7 +20,7 @@ module.exports = {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
 
-            const message = read(data, pageNo, msg);
+            const message = await read(data, pageNo, msg);
 
             try {
                 message.react('⬅');
@@ -43,7 +43,7 @@ module.exports = {
     },
 };
 
-const read = (data, pageNo, msg) => {
+const read = async (data, pageNo, msg) => {
     const regex = /([0-9]+)t/;
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
@@ -55,7 +55,9 @@ const read = (data, pageNo, msg) => {
     .attachFiles([attachment])
     .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-    return msg.channel.send(e);
+    const embed = await msg.channel.send(e);
+    console.log(embed);
+    return embed;
 };
 
 const findDoujin = async (id) => {
