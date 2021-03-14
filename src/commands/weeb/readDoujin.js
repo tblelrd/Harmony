@@ -88,7 +88,7 @@ function doRequest(url) {
   }
 
 const findDoujin = async (id) => {
-    const url = `https://nhentai.net/g/${id}`;
+    const url = `https://nhentai.to/g/${id}`;
     const html = await rp(url);
     if(!html) return;
     const img = $('div > div > a > img[is=lazyload-image]', html)[1].attribs['data-src'];
