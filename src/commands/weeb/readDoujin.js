@@ -15,7 +15,7 @@ module.exports = {
     dm: true,
     callback: async (msg, args, text, bot) => {
         let pageNo = parseInt(args[1]) - 1;
-        if(!pageNo) pageNo = 1;
+        if(!pageNo) pageNo = 0;
         const data = await findDoujin(args[0]);
         if(!data) msg.reply('Invalid id or smthn');
 
