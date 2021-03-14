@@ -13,31 +13,50 @@ module.exports = {
     category: ['Weeb'],
     desc: 'Godly command',
     dm: true,
-    callback: async (msg, args) => {
+    callback: async (msg, args, text, bot) => {
         const pageNo = parseInt(args[1]) - 1;
 
         try {
             const data = await findDoujin(args[0]);
             if(!data) msg.reply('Invalid id or smthn');
-            if(!data.pages[parseInt(args[1]) - 1]) return msg.channel.send('Page doesnt exist');
-            const regex = /([0-9]+)t/;
-            const yes = regex.exec(data.pages[pageNo]);
 
-            request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), function (err, res, body) {
-                const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
-                const e = new MessageEmbed()
-                .setTitle(parseInt(pageNo + 1))
-                .attachFiles([attachment])
-                .setImage(`attachment://${data.title}-${pageNo}.jpg`);
+            const message = read(data, pageNo, msg);
 
-                msg.channel.send(e);
+            try {
+                message.react('⬅');
+                message.react('➡');
+            } catch {
+                console.log('Error while trying to react');
+            }
+
+            const collector = message.createReactionCollector(
+                (reaction, user) => bot.users.cache.get((_user) => user.id == _user.id),
+            );
+
+            collector.on('collect', (reaction, user) => {
+                console.log(user.username);
             });
-
 
         } catch(err) {
             console.log(err);
         }
     },
+};
+
+const read = (data, pageNo, msg) => {
+    const regex = /([0-9]+)t/;
+    const yes = regex.exec(data.pages[pageNo]);
+    if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
+
+    request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), (err, res, body) => {
+        const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
+        const e = new MessageEmbed()
+        .setTitle(parseInt(pageNo + 1))
+        .attachFiles([attachment])
+        .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
+
+        return msg.channel.send(e);
+    });
 };
 
 const findDoujin = async (id) => {
