@@ -51,7 +51,7 @@ const read = async (data, pageNo, msg, bot) => {
 const sendEmbed = async (data, pageNo, msg) => {
     const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
-    const body = await doRequest(`https://i.nhentai.net/galleries/${data.id}/${pageNo + 1}.jpg`);
+    const body = await doRequest(`https://i.nhentai.net/galleries/${data.imgID}/${pageNo + 1}.jpg`);
     const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
@@ -86,6 +86,7 @@ function doRequest(url) {
 
   const findDoujin = async (id) => {
     const url = `https://nhentai.net/g/${id}`;
+    const regex = /https:\/\/t.nhentai.net\/galleries\/([0-9]+)\/[0-1]t.jpg/gm;
 
 	const tags = [];
 	const characters = [];
@@ -97,7 +98,9 @@ function doRequest(url) {
     $('section > div:contains(Tags:) > span.tags > a > span.name', html).each((i, element) => tags.push($(element).html()));
 	$('section > div:contains(Characters:) > span.tags > a > span.name', html).each((i, element) => characters.push($(element).html()));
 	$('section > div:contains(Languages:) > span.tags > a > span.name', html).each((i, element) => langs.push($(element).html()));
+	const previews = $('div.thumb-container > a > img.lazyload', html)['0'].attribs['data-src'];
 
+	const imgID = regex.exec(previews);
 	const data = {
 		html,
 		img,
@@ -106,6 +109,7 @@ function doRequest(url) {
 		characters,
 		langs,
         id,
+        imgID: imgID[1],
 	};
 	return data;
 };
