@@ -43,7 +43,7 @@ const read = async (data, pageNo, msg) => {
     let message = 1;
 
     const res = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    const attachment = new MessageAttachment(res.body, `${data.title}-${pageNo}.jpg`);
+    const attachment = new MessageAttachment(res.body.buffer, `${data.title}-${pageNo}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
     .attachFiles([attachment])
