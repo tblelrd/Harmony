@@ -42,8 +42,8 @@ const read = async (data, pageNo, msg) => {
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
     let message = 1;
 
-    const res = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    const attachment = new MessageAttachment(res.body.buffer, `${data.title}-${pageNo}.jpg`);
+    const body = await doRequest(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
+    const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
     .attachFiles([attachment])
@@ -61,6 +61,18 @@ const read = async (data, pageNo, msg) => {
     return message;
 
 };
+
+function doRequest(url) {
+    return new Promise(function (resolve, reject) {
+      request(url, function (error, res, body) {
+        if (!error && res.statusCode == 200) {
+          resolve(body);
+        } else {
+          reject(error);
+        }
+      });
+    });
+  }
 
 const findDoujin = async (id) => {
     const url = `https://nhentai.to/g/${id}`;
