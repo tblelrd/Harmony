@@ -42,23 +42,22 @@ const read = async (data, pageNo, msg) => {
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
     let message = 1;
 
-    request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), async (err, res, body) => {
-        const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
-        const e = new MessageEmbed()
-        .setTitle(parseInt(pageNo + 1))
-        .attachFiles([attachment])
-        .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
+    const res = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
+    const attachment = new MessageAttachment(res.body, `${data.title}-${pageNo}.jpg`);
+    const e = new MessageEmbed()
+    .setTitle(parseInt(pageNo + 1))
+    .attachFiles([attachment])
+    .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-        message = await msg.channel.send(e);
+    message = await msg.channel.send(e);
 
-        try {
-            message.react('⬅');
-            message.react('➡');
-        } catch {
-            console.log('Error while trying to react');
-        }
+    try {
+        message.react('⬅');
+        message.react('➡');
+    } catch {
+        console.log('Error while trying to react');
+    }
 
-    });
     return message;
 
 };
