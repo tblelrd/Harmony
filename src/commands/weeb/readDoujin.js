@@ -48,15 +48,15 @@ const read = (data, pageNo, msg) => {
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
 
-    request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), (err, res, body) => {
-        const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
-        const e = new MessageEmbed()
-        .setTitle(parseInt(pageNo + 1))
-        .attachFiles([attachment])
-        .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
+    const body = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
+    console.log(body);
+    const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
+    const e = new MessageEmbed()
+    .setTitle(parseInt(pageNo + 1))
+    .attachFiles([attachment])
+    .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-        return msg.channel.send(e);
-    });
+    return msg.channel.send(e);
 };
 
 const findDoujin = async (id) => {
