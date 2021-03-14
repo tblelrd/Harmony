@@ -52,6 +52,7 @@ const sendEmbed = async (data, pageNo, msg) => {
     const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
     const body = await doRequest(`https://t.nhentai.net/galleries/${data.id}/${pageNo}.jpg`);
+    console.log(body);
     const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
