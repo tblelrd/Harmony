@@ -54,7 +54,7 @@ const sendEmbed = async (data, pageNo, msg) => {
     const message = await msg.channel.send('Please wait as the image takes a while to load');
 
     const body = await doRequest(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
+    const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
     .attachFiles([attachment])
