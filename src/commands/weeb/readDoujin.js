@@ -21,6 +21,7 @@ module.exports = {
             if(!data) msg.reply('Invalid id or smthn');
 
             const message = await read(data, pageNo, msg);
+            console.log(message);
             const collector = message.createReactionCollector(
                 (reaction, user) => bot.users.cache.get((_user) => user.id == _user.id),
             );
@@ -39,6 +40,7 @@ const read = async (data, pageNo, msg) => {
     const regex = /([0-9]+)t/;
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
+    let message = 1;
 
     request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]), async (err, res, body) => {
         const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
@@ -47,7 +49,7 @@ const read = async (data, pageNo, msg) => {
         .attachFiles([attachment])
         .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-        const message = await msg.channel.send(e);
+        message = await msg.channel.send(e);
 
         try {
             message.react('⬅');
@@ -56,8 +58,8 @@ const read = async (data, pageNo, msg) => {
             console.log('Error while trying to react');
         }
 
-        return message;
     });
+    return message;
 
 };
 
