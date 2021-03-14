@@ -7,14 +7,15 @@ const request = require('request').defaults({ encoding: null });
 module.exports = {
     commands: ['readdoujin', 'rd'],
     expectedArgs: '<doujin number> <page>',
-    minArgs: 2,
+    minArgs: 1,
     maxArgs: 2,
     permissions: ['ADMINISTRATOR'],
     category: ['Weeb'],
     desc: 'Godly command',
     dm: true,
     callback: async (msg, args, text, bot) => {
-        const pageNo = parseInt(args[1]) - 1;
+        let pageNo = parseInt(args[1]) - 1;
+        if(!pageNo) pageNo = 1;
         const data = await findDoujin(args[0]);
         if(!data) msg.reply('Invalid id or smthn');
 
