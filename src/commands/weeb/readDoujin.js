@@ -21,14 +21,6 @@ module.exports = {
             if(!data) msg.reply('Invalid id or smthn');
 
             const message = await read(data, pageNo, msg);
-
-            try {
-                message.react('⬅');
-                message.react('➡');
-            } catch {
-                console.log('Error while trying to react');
-            }
-
             const collector = message.createReactionCollector(
                 (reaction, user) => bot.users.cache.get((_user) => user.id == _user.id),
             );
@@ -55,9 +47,16 @@ const read = async (data, pageNo, msg) => {
         .attachFiles([attachment])
         .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-        const embed = await msg.channel.send(e);
-        console.log(embed);
-        return embed;
+        const message = await msg.channel.send(e);
+
+        try {
+            message.react('⬅');
+            message.react('➡');
+        } catch {
+            console.log('Error while trying to react');
+        }
+
+        return message;
     });
 
 };
