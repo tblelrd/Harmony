@@ -51,7 +51,7 @@ const sendEmbed = async (data, pageNo, msg) => {
     const regex = /([0-9]+)t/;
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
-    const message = await msg.channel.send('Please wait as the image takes a while to load');
+    const pleaseWait = await msg.channel.send('Please wait as the image takes a while to load');
 
     const body = await doRequest(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
     const attachment = new MessageAttachment(body, `${data.title}-${pageNo + 1}.jpg`);
@@ -60,7 +60,8 @@ const sendEmbed = async (data, pageNo, msg) => {
     .attachFiles([attachment])
     .setImage(`attachment://${data.title}-${pageNo + 1}.jpg`);
 
-    await message.edit(e);
+    const message = await msg.channel.send(e);
+    await pleaseWait.delete();
 
     try {
         message.react('⬅');
