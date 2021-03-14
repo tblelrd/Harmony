@@ -48,9 +48,8 @@ const read = (data, pageNo, msg) => {
     const yes = regex.exec(data.pages[pageNo]);
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
 
-    const body = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    console.log(body);
-    const attachment = new MessageAttachment(body, `${data.title}-${pageNo}.jpg`);
+    const page = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
+    const attachment = new MessageAttachment(page.body, `${data.title}-${pageNo}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
     .attachFiles([attachment])
