@@ -49,7 +49,7 @@ const read = async (data, pageNo, msg) => {
     if(!data.pages[pageNo]) return msg.channel.send('Page doesnt exist');
 
     const page = request.get(data.pages[pageNo].replace(/[0-9]+t/, yes[1]));
-    const attachment = new MessageAttachment(page.body, `${data.title}-${pageNo}.jpg`);
+    const attachment = new MessageAttachment(page.body.buffer, `${data.title}-${pageNo}.jpg`);
     const e = new MessageEmbed()
     .setTitle(parseInt(pageNo + 1))
     .attachFiles([attachment])
