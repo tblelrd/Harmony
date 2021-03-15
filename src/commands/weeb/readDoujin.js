@@ -10,7 +10,7 @@ module.exports = {
     minArgs: 1,
     maxArgs: 2,
     permissions: ['ADMINISTRATOR'],
-    category: ['Weeb'],
+    category: 'Weeb',
     desc: 'Godly command',
     dm: true,
     callback: async (msg, args, text, bot) => {
