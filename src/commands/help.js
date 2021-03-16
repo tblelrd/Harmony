@@ -84,7 +84,7 @@ module.exports = {
                             }
                         }
                     }
-                    res = result.map((cmd) => `\`${cmd}\``).join(' ');
+                    res = result.map((cmd) => `\`${cmd}\``).join('\n');
                     if (res) e.addField(category, res, true);
                 }
             } else {
@@ -118,7 +118,7 @@ module.exports = {
                             result.push(aliases[0]);
                         }
                     }
-                    res = result.map((cmd) => `\`${cmd}\``).join(' ');
+                    res = result.map((cmd) => `\`${cmd}\``).join('\n');
                     e.addField(category, res ? res : 'res', true);
                 }
             }
