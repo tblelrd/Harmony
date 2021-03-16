@@ -13,12 +13,17 @@ module.exports = {
         args.shift();
         const text = args.join(' ');
 
-        const translation = await translate(text, { to: toLang, from: language, engine: 'libre' });
+        try {
 
-        const wh = await msg.channel.createWebhook('Translate bot');
-        await wh.send(translation, { username: msg.member.nickname ? msg.member.nickname : msg.author.username, avatarURL: msg.author.avatarURL() });
+            const translation = await translate(text, { to: toLang, from: language, engine: 'libre' });
 
-        await wh.delete();
+            const wh = await msg.channel.createWebhook('Translate bot');
+            await wh.send(translation, { username: msg.member.nickname ? msg.member.nickname : msg.author.username, avatarURL: msg.author.avatarURL() });
+
+            await wh.delete();
+        } catch (err) {
+            msg.reply('Not a valid language idiot');
+        }
         msg.delete();
     },
 };
