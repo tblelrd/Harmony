@@ -30,6 +30,7 @@
     "request-promise": "^4.2.6",
     "table": "^6.0.7",
     "teemojs": "^1.7.0",
+    "translate": "^1.2.3",
     "ytdl-core": "^4.5.0",
     "ytsearcher": "^1.2.3"
   }
