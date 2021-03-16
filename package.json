@@ -28,9 +28,11 @@
     "opusscript": "0.0.7",
     "path": "^0.12.7",
     "relevant-urban": "^2.0.0",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "table": "^6.0.7",
     "teemojs": "^1.7.0",
+    "translate": "^1.2.3",
     "ytdl-core": "^4.5.0",
     "ytsearcher": "^1.2.3"
   }
