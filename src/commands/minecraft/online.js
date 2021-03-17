@@ -14,7 +14,7 @@ module.exports = {
     callback: (msg, args) => {
 
         client.getPlayerByUsername(args[0], (err, player) => {
-            if(err) throw err;
+            if(err) msg.reply('there was an error');
             if(!player) return msg.reply('they dont exist');
 
             if(player.lastLogin > player.lastLogout) {

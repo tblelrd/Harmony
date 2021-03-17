@@ -19,7 +19,7 @@ module.exports = {
         .setAuthor(msg.author.username, msg.author.avatarURL());
 
         client.getPlayerByUsername(args[0], (err, player) => {
-            if(err) throw err;
+            if(err) msg.reply('There was an error');
             if(!player) return msg.reply('they don exist');
 
 
