@@ -9,7 +9,7 @@ module.exports = {
         const guild = msg.guild;
         const user = await bot.users.fetch(args[0]);
         if(!user) return msg.reply('They don exist');
-        const member = guild.members.fetch(user);
+        const member = await guild.members.fetch(user);
         const name = member.nickname || user.username;
         const avatar = user.avatarURL();
 
