@@ -24,9 +24,9 @@ module.exports = {
             .addField('Rating', `${data.rating}`, true)
             .addField('Popularity', `#${data.popularity}`, true)
             .addField('Aired', `From ${data.start_date} to ${data.end_date}`, true)
-            .addField('Status', `${data.status}`, true)
-            .addField('Source', `${data.source || 'None'}`, true)
-            .addField('Genres', data.genres.map((genre) => `${genre.name}`).join(' ') || 'Somehow this anime doesnt have any Genres', true)
+            .addField('Status', `${toTitleCase(data.status)}`, true)
+            .addField('Source', `${toTitleCase(data.source) || 'None'}`, true)
+            .addField('Genres', data.genres.map((genre) => `${toTitleCase(genre.name)}`).join(' ') || 'Somehow this anime doesnt have any Genres', true)
             .addField('Episodes', `${data.num_episodes}`, true)
             .addField('Episode duration', `${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}`, true);
 
@@ -47,4 +47,14 @@ const searchAnime = async (name) => {
 
     if(!search) return null;
     return search;
+};
+
+const toTitleCase = (str) => {
+    str.replace(/_/g, ' ');
+    return str.replace(
+    /\w\S*/g,
+    function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    },
+    );
 };

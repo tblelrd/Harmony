@@ -1,12 +1,5 @@
-/*
-TODO:
-  -No spam ✔
-  -Better import playlist (if possible) ✔
-*/
 // My id 500648375297900545
-
 const Discord = require('discord.js');
-// const DisTube = require('distube');
 const mongoose = require('mongoose');
 
 const config = require('./config.json');
@@ -15,7 +8,6 @@ const registery = require('./src/utils/register');
 const bot = new Discord.Client();
 
 bot.currentSong = null;
-// bot.distube = new DisTube(bot, { searchSongs: true, emitNewSongOnly: true });
 
 bot.once('ready', async () =>{
 

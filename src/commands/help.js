@@ -50,19 +50,6 @@ module.exports = {
                 const categories = [];
                 for (const command of commands) {
                     if (command.commands) {
-                        // let aliases = command.commands;
-                        // if(typeof aliases == 'string') {
-                        //     aliases = [aliases];
-                        // }
-                        // if (args[0]) {
-                        //     for (const alias of aliases) {
-                        //         isf (args[0] == alias) {
-                        //             e.setTitle('Command help');
-                        //             e.addField(`${alias}`, `${command.desc ? command.desc : 'No desc set'}`);
-                        //             return msg.channel.send(e);
-                        //         }
-                        //     }
-                        // }
                         if (!command.category) command.category = 'Other';
                         if (!categories.includes(command.category)) {
                             categories.push(command.category);
@@ -94,11 +81,6 @@ module.exports = {
                 const categories = [];
                 for (const dmCommand of dmCommands) {
                     if (dmCommand.commands) {
-                        // if (args[0] == dmCommand.commands.includes(args[0])) {
-                        //     e.setTitle('Command help');
-                        //     e.addField(`${dmCommand.aliases[0]}`, `${dmCommand.desc ? dmCommand.desc : 'No desc set'}`);
-                        //     return msg.channel.send(e);
-                        // }
                         if (!dmCommand.category) dmCommand.category = 'Other';
                         if (!categories.includes(dmCommand.category)) {
                             categories.push(dmCommand.category);
