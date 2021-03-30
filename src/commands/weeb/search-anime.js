@@ -50,8 +50,8 @@ const searchAnime = async (name) => {
 };
 
 const toTitleCase = (str) => {
-    str.replace(/_/g, ' ');
-    return str.replace(
+    const noUnderscore = str.replace(/(_)/g, ' ');
+    return noUnderscore.replace(
     /\w\S*/g,
     function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
