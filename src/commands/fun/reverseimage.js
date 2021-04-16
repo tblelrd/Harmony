@@ -14,7 +14,7 @@ module.exports = {
      */
     callback: async (msg) => {
         const Attachment = (msg.attachments).array();
-        if(checkIfNOTImage(Attachment[0]?.url)) return msg.channel.send('No Image found');
+        if(checkIfNOTImage(Attachment[0] && Attachment[0].url)) return msg.channel.send('No Image found');
         const img = Attachment[0];
 
         const message = await msg.channel.send('Searching image, please wait...');
