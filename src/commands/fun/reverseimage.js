@@ -44,6 +44,7 @@ const urlRegex = /.*\.(.*)/g;
  */
 const checkIfNOTImage = (url) => {
     const regex = urlRegex.exec(url);
+    if(!regex) return true;
     switch(regex[1]) {
         case 'png':
         case 'jpg':
