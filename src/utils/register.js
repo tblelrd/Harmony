@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const fs = require('fs');
 const path = require('path');
 const tableConfig = require('./tableConfig');
@@ -18,6 +19,7 @@ const eventBaseName = 'event-base.js';
 const eventBase = require('../events/event-base');
 const dmCommandBaseName = 'dm-command-base.js';
 const dmCommandBase = require('../commands/dm-command-base');
+const { Client } = require('discord.js');
 
 const commands = [];
 const readCommands = (bot, dir) => {
@@ -91,15 +93,29 @@ const readDmCommands = (bot, dir) => {
 };
 
 module.exports = {
+    /**
+     * @param {Client} bot
+     * @returns {void} Nothing.
+     */
     registerEvents: async (bot) => {
         readEvents(bot, 'events');
         console.log(table(eventStatus, tableConfig.options));
     },
+    /**
+     *
+     * @param {Client} bot
+     * @returns {any[]} stuff
+     */
     registerCommands: (bot) => {
         readCommands(bot, 'commands');
         if(bot) console.log(table(commandStatus, tableConfig.options));
         return commands;
     },
+    /**
+     *
+     * @param {Client} bot
+     * @returns {any[]} stuff
+     */
     registerDm: (bot) => {
         readDmCommands(bot, 'commands');
         return dmCommands;

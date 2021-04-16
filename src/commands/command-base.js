@@ -2,6 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-const */
 /* eslint-disable no-unused-vars */
+const { Client } = require('discord.js');
 const {
     prefix,
 } = require('../../config.json');
@@ -52,6 +53,11 @@ const validatePermissions = (permissions) => {
 
 let recentlyrun = [];
 
+/**
+ *
+ * @param {Client} client
+ * @param {Object} commandOptions
+ */
 module.exports = (client, commandOptions) => {
     let {
         commands,

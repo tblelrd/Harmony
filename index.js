@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const config = require('./config.json');
 const registery = require('./src/utils/register');
 
+const Database = require('@replit/database');
+const db = new Database();
+
 const bot = new Discord.Client();
 
 bot.currentSong = null;
@@ -30,11 +33,7 @@ bot.once('ready', async () =>{
     bot.startDate = Date.now();
 });
 bot.setMaxListeners(0);
-const Database = require('@replit/database');
-const db = new Database();
+
 db.get('token').then(value => {
 	bot.login(value);
 });
-// bot.on('message', msg => {
-//     msg.member.roles.highest.position
-// });
