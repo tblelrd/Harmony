@@ -6,6 +6,8 @@ module.exports = {
     expectedArgs: '<subreddit>',
     minArgs: 1,
     maxArgs: 1,
+    category: 'Fun',
+    desc: 'Reddit stuff',
     callback: async (msg, args) => {
         try {
             const reddit = await api.advanced(args[0]);
