@@ -17,17 +17,31 @@ module.exports = {
             const displayList = animelist.map((v, i) =>`${i + 1}. ${v.title}` ).join('\n');
     
             const message = await msg.channel.send(
-                `\`\`\`nim\nAnime Results:\n${displayList}\n\nPlease select one of the above (Using numbers!)\`\`\``
+                `\`\`\`nim\nAnime Results:\n${displayList}\n\nPlease select one of the above (Using numbers!), or C to cancel\`\`\``
             );
             const collector = message.channel.createMessageCollector((m) => m.author.id == msg.author.id, { time: 30000 });
 
             collector.on('collect', async(m) => {
                 const number = parseInt(m.content) 
-                if(!number || number > 5) {
+                if (m.content.toLowerCase() == 'c') {
+					try {
+						await m.delete();
+						await message.delete();
+						await msg.delete();
+					} catch (e) {
+						//
+					}
+					collector.stop();
+					return;
+				} else if(!number || number > 5) {
                     msg.channel.send('Please enter a number');
-                    await m.delete();
+					try {
+						await m.delete();
+					} catch (e) {
+						//
+					}
                     return;
-                }
+                } 
     
                 const data = search.data[number - 1].node;
                 
@@ -47,8 +61,14 @@ module.exports = {
                 .addField('Episodes', `${data.num_episodes}`, true)
                 .addField('Episode duration', `${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}`, true);
                 
-                await m.delete();
-                await msg.channel.send(e);
+	            await msg.channel.send(e);
+				try {
+                	await m.delete();
+					await message.delete();
+				} catch (e) {
+
+				}
+				collector.stop();
             });
             } catch {
             msg.reply('Couldn\'t find the anime :(');

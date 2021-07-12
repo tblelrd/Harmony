@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { Mal } = require('node-mymangalist');
+const { Mal } = require('node-myanimelist');
 const auth = Mal.auth('ec4cca9b42e3849db83b46986639783b');
 
 module.exports = {
@@ -17,17 +17,31 @@ module.exports = {
             const displayList = mangalist.map((v, i) =>`${i + 1}. ${v.title}` ).join('\n');
     
             const message = await msg.channel.send(
-                `\`\`\`nim\nManga Results:\n${displayList}\n\nPlease select one of the above (Using numbers!)\`\`\``
+                `\`\`\`nim\nManga Results:\n${displayList}\n\nPlease select one of the above (Using numbers!), or C to cancel\`\`\``
             );
             const collector = message.channel.createMessageCollector((m) => m.author.id == msg.author.id, { time: 30000 });
 
             collector.on('collect', async(m) => {
                 const number = parseInt(m.content) 
-                if(!number || number > 5) {
+                if (m.content.toLowerCase() == 'c') {
+					try {
+						await m.delete();
+						await message.delete();
+						await msg.delete();
+					} catch (e) {
+						//
+					}
+					collector.stop();
+					return;
+				} else if(!number || number > 5) {
                     msg.channel.send('Please enter a number');
-                    await m.delete();
+					try {
+						await m.delete();
+					} catch (e) {
+						//
+					}
                     return;
-                }
+                } 
     
                 const data = search.data[number - 1].node;
                 
@@ -45,7 +59,14 @@ module.exports = {
                 .addField('Chapters', `${data.num_chapters || 'Unknown'}`, true)
                 .addField('Volumes', `${data.num_volumes || 'Unknown'}`, true);
                 
-                await msg.channel.send(e);
+				await msg.channel.send(e);
+				try {
+					await m.delete();
+					await message.delete();
+				} catch (e) {
+					//
+				}
+				collector.stop();
             });
         } catch {
             msg.reply('Couldn\'t find the manga :(');
