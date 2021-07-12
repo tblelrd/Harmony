@@ -12,26 +12,45 @@ module.exports = {
     callback: async (msg, args, text) => {
         try {
             const search = await searchAnime(text);
-            const data = search.data[0].node;
 
-            const e = new MessageEmbed()
-            .setDescription(data.synopsis)
-            .setTitle(data.alternative_titles.en || data.title)
-            .setImage(data.main_picture.large)
-            .setFooter(data.studios[0].name || 'No studio specified')
-            .setURL('https://myanimelist.net/anime/' + data.id)
-            .addField('Rank', `#${data.rank}`, true)
-            .addField('Rating', `${toTitleCase(data.rating)}`, true)
-            .addField('Popularity', `#${data.popularity}`, true)
-            .addField('Aired', `From ${data.start_date} to ${data.end_date || 'still airing'}`, true)
-            .addField('Status', `${toTitleCase(data.status)}`, true)
-            .addField('Source', `${toTitleCase(data.source) || 'None'}`, true)
-            .addField('Genres', data.genres.map((genre) => `${toTitleCase(genre.name)}`).join(' ') || 'Somehow this anime doesnt have any Genres', true)
-            .addField('Episodes', `${data.num_episodes}`, true)
-            .addField('Episode duration', `${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}`, true);
+            const animelist = search.data.map(v => v.node).slice(0, 5);
+            const displayList = animelist.map((v, i) =>`${i + 1}. ${v.title}` ).join('\n');
+    
+            const message = await msg.channel.send(
+                `\`\`\`nim\nAnime Results:\n${displayList}\n\nPlease select one of the above (Using numbers!)\`\`\``
+            );
+            const collector = message.channel.createMessageCollector((m) => m.author.id == msg.author.id, { time: 30000 });
 
-            await msg.channel.send(e);
-        } catch {
+            collector.on('collect', async(m) => {
+                const number = parseInt(m.content) 
+                if(!number || number > 5) {
+                    msg.channel.send('Please enter a number');
+                    await m.delete();
+                    return;
+                }
+    
+                const data = search.data[number - 1].node;
+                
+                const e = new MessageEmbed()
+                .setDescription(data.synopsis)
+                .setTitle(data.alternative_titles.en || data.title)
+                .setImage(data.main_picture.large)
+                .setFooter(data.studios[0].name || 'No studio specified')
+                .setURL('https://myanimelist.net/anime/' + data.id)
+                .addField('Rank', `#${data.rank}`, true)
+                .addField('Rating', `${toTitleCase(data.rating)}`, true)
+                .addField('Popularity', `#${data.popularity}`, true)
+                .addField('Aired', `From ${data.start_date} to ${data.end_date || 'still airing'}`, true)
+                .addField('Status', `${toTitleCase(data.status)}`, true)
+                .addField('Source', `${toTitleCase(data.source) || 'None'}`, true)
+                .addField('Genres', data.genres.map((genre) => `${toTitleCase(genre.name)}`).join(' ') || 'Somehow this anime doesnt have any Genres', true)
+                .addField('Episodes', `${data.num_episodes}`, true)
+                .addField('Episode duration', `${Math.floor(data.average_episode_duration / 60) + 'm' || 'Forever'}`, true);
+                
+                await m.delete();
+                await msg.channel.send(e);
+            });
+            } catch {
             msg.reply('Couldn\'t find the anime :(');
         }
     },
