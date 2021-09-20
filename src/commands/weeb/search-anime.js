@@ -89,6 +89,7 @@ const searchAnime = async (name) => {
 };
 
 const toTitleCase = (str) => {
+	if(!str) return str;
     const noUnderscore = str.replace(/(_)/g, ' ');
     return noUnderscore.replace(
     /\w\S*/g,
